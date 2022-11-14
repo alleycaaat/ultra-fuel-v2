@@ -1,0 +1,476 @@
+$lightGrey: #bfbfbf;
+$medGrey: #7d7d7d;
+$darkGrey: #6c6c6c;
+$darkOrange: #af5a00;
+$medOrange: #e07300;
+$orange: #ff890d;
+$blue: #0f87af;
+$lightBlue: #3196b8;
+$darkBlue: #03536d;
+$lightOrange: rgb(255, 161, 61);
+$transparentOrange: rgba(255, 161, 61, 0.3);
+$box-shadow: 5px 5px 5px 0px rgb(144, 144, 144);
+$box-shadow2: 10px 0 10px rgb(88, 88, 88), -10px 0 10px rgb(88, 88, 88);
+$time-shadow: 0 3px 3px rgb(88, 88, 89);
+$button-shaddow: 3px 3px 3px 0px rgb(144, 144, 144);
+$blueborder: 3px solid $darkBlue;
+$orangeborder: 3px solid $orange;
+$whiteborder: 3px solid #fff;
+$border: 3px solid $darkGrey;
+$whitebutton: linear-gradient(#fff, #fff, rgb(194, 194, 194));
+$box-shadow3: 0 4px 0 rgba(0, 0, 0, 0.25),
+    0 4px 0 $lightGrey,
+    0 4px 6px rgba(0, 0, 0, 0.45);
+
+* {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+button {
+    cursor: pointer;
+    transition-duration: 0.5s;
+    &:active {
+        box-shadow: 0 0 2px $darkGrey !important;
+        transform: translateY(2px);
+    }
+}
+ul {
+    list-style: none;
+}
+
+@mixin btn-21px {
+    line-height: 21px;
+    font-size: 21px;
+    height: 21px;
+    width: 21px;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.chart,
+.mobile,
+.desktop,
+.edit-mobile {
+    animation: fade 0.5s linear forwards;
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7px;
+    width: 95%;
+    max-width: 680px;
+    fieldset {
+        border: none;
+    }
+    select {
+        border: none;
+        margin-right: 5px;
+        margin-left: 5px;
+        background-color: $transparentOrange;
+    }
+    //styles for the div containing the dropdowns
+
+    //edit-mobile is the only option on the edit page now
+    //mobile is the mobile version of chart
+    .mobile {
+        width: 100%;
+        max-width: 550px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 0 0 5px 5px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 13px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+
+        //holds the time
+        .top-row {
+            width: 100%;
+            margin-top: 0;
+            text-align: center;
+            background-color: $lightOrange;
+            box-shadow: $time-shadow;
+        }
+        //styles the rows
+        .m-row {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-size: 17px;
+            background-color: rebeccapurple;
+            .m-block {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 30%;
+                height: auto;
+                margin: 2px;
+                button {
+                    padding: 3px 7px;
+                    border: none;
+                    box-shadow: $box-shadow;
+                    text-transform: uppercase;
+                    height: auto;
+                    margin: 5px;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    background-image: $whitebutton;
+                    color: $darkBlue;
+                    font-weight: 700;
+                    box-shadow: $box-shadow3;
+                    &:hover {
+                        color: rgb(62, 62, 62);
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+                        transform: translateY(4px);
+                    }
+                    &:focus {
+                        color: #fff;
+                        background-image: linear-gradient($lightBlue, $darkBlue);
+                    }
+
+                }
+                h2 {
+                    width: 100%;
+                    text-align: center;
+                    font-size: 17px;
+                }
+            }
+            .m-food-block {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                h2 {
+                    width: 100%;
+                    font-size: 17px;
+                    background-color: $transparentOrange;
+                    text-align: center;
+                }
+                ul {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    margin-top: -5px;
+                    border-bottom: 2px solid $transparentOrange;
+                    justify-content: center;
+                    li {
+                        display: flex;
+                        flex-direction: row;
+                        height: auto;
+                        margin: 2px 3px;
+                        line-height: 27px;
+                        button {
+                            @include roundbtn;
+                            @include btn-21px;
+                        }
+                    }
+                }
+            }
+
+            //remove buttons for water and tw
+            span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                button {
+                    @include roundbtn;
+                    font-size: 21px;
+                    line-height: 21px;
+                    width: 21px;
+                    height: 21px;
+                    /*
+                    box-shadow: none !important;
+                    background-color: #000;
+                    width: 15px;
+                    height: 4px !important;
+                    */
+                }
+            }
+            p {
+                font-size: 15px;
+            }
+        }
+    }
+    .chartrow {
+        border-radius: 15px;
+        border: $border;
+        margin: 7px 0;
+        ul {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            li {
+                width: 70%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 2px;
+            }
+            .removeBtn {
+                height: 31px;
+                font-size: 25px;
+            }
+        }
+    }
+    .desktop {
+        display: none;
+        width: 80%;
+        margin: 5px auto 17px auto;
+        border-radius: 0 0 5px 5px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+        &.addFuel {
+            width: auto;
+            border-radius: 5px;
+            padding: 5px 7px;
+        }
+    }
+    //colors the rows
+    .row {
+        &:nth-of-type(1) {
+            background-color: $lightOrange;
+            box-shadow: $time-shadow;
+        }
+        &:nth-of-type(3) {
+            margin-bottom: 7px;
+            margin-top: -2px;
+        }
+    }
+    //wrapped in desktop wrapped by chart
+    //this is the non-edit display
+    .top-block {
+        text-align: center;
+        background-color: $lightOrange;
+        width: 100%;
+        margin-top: 11px;
+    }
+
+    .row,
+    .chartrow {
+        width: 100%;
+        display: none;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        .blocks {
+            display: flex;
+            flex-direction: column;
+            margin: 5px;
+            width: 250px;
+            width: 20%;
+            .editBtn,
+            .saveBtn,
+            .cancelBtn {
+                padding: 2px;
+                border: none;
+                box-shadow: $box-shadow;
+                text-transform: uppercase;
+                margin: 5px;
+                border-radius: 5px;
+                font-size: 16px;
+                color: $darkBlue;
+                background-color: #fff;
+                font-weight: 700;
+                background-image: $whitebutton;
+                color: $darkBlue;
+                font-weight: 700;
+                box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25),
+                    0 4px 0 $lightGrey,
+                    0 4px 6px rgba(0, 0, 0, 0.45);
+                &:hover {
+                    color: rgb(62, 62, 62);
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+                    transform: translateY(4px);
+                }
+                &:active {
+                    color: $darkBlue;
+                }
+            }
+            .time {
+                background-color: $lightBlue;
+                color: #000;
+                font-size: 16px;
+                line-height: 16px;
+                margin-top: 2px;
+                padding: 3px;
+                vertical-align: middle;
+                border-radius: 5px;
+                //font-weight: 500;
+                width: 100%;
+            }
+            h2 {
+                text-align: center;
+                font-size: 15px;
+                line-height: 15px;
+            }
+            p {
+                display: flex;
+                flex-direction: column;
+                font-size: 15px;
+                text-align: center;
+            }
+            span {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-size: 15px;
+                button {
+                    margin-left: 11px;
+                    background-color: #000;
+                    width: 19px;
+                    height: 5px;
+                    border: none;
+                    box-shadow: $box-shadow;
+                }
+            }
+            li {
+                font-size: 15px;
+            }
+            &.food {
+                width: 100%;
+                margin-top: 11px;
+                margin-bottom: 7px;
+                border-bottom: 2px solid $medOrange;
+                ul {
+                    font-size: 15px;
+                    display: flex;
+                    flex-direction: row;
+                    width: 90%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    align-items: center;
+                    justify-content: center;
+                    li {
+                        margin: 1px 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (prefers-reduced-motion: reduce) {
+    body {
+        animation: none;
+    }
+}
+@media screen and (min-width: 450px) {
+    .wrapper {
+        .fuel-guide {
+            .ul-row {
+                flex-direction: row;
+            }
+        }
+        .row,
+        .chartrow {
+            display: flex;
+            h2 {
+                font-size: 19px;
+            }
+            p {
+                font-size: 19px;
+            }
+        }
+        .raceSplits {
+            .plusWrap {
+                display: none;
+            }
+            .hourbtns {
+                display: flex;
+                .tab {
+                    height: auto;
+                    max-width: 70px;
+                }
+            }
+        }
+        .chart {
+            margin-top: 0;
+            .last {
+                display: flex;
+            }
+            .drops {
+                display: flex;
+            }
+        }
+    }
+}
+@media screen and (min-width: 530px) {
+    .wrapper {
+        .m-add {
+            display: none;
+        }
+        .mobile {
+            display: none;
+        }
+        .desktop {
+            width: 100%;
+            max-width: 880px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+@media (max-width: 659px) {
+    .svg--lg {
+        display: none;
+    }
+}
+@media screen and (min-width: 660px) {
+    .wrapper {
+        .svg--sm {
+            display: none
+        }
+
+        //max-width: 685px;
+        .raceSplits {
+            .hourbtns {
+                .tab {
+                    font-size: 18px;
+                    max-width: 125px;
+                }
+            }
+        }
+        .edit-mobile {
+            .m-row,
+            h2 {
+                font-size: 19px;
+                .m-block,
+                p {
+                    font-size: 17px;
+                }
+            }
+        }
+        .row,
+        .chartrow {
+            .blocks {
+                span,
+                h2,
+                .time {
+                    font-size: 21px;
+                }
+                .time {
+                    line-height: 21px;
+                }
+                p,
+                li {
+                    font-size: 19px;
+                }
+            }
+        }
+    }
+}
