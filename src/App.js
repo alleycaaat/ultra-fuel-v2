@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import './style.css';
 import { FaPlusCircle } from 'react-icons/fa';
 import { BiLinkExternal } from 'react-icons/bi'
 import AddFuel from './components/AddFuel';
@@ -518,17 +517,17 @@ function App() {
             });
     };
 
-    const addFuelResetBtn = () => {
+    const addFuelBtn = () => {
         setSoloHr({ ...clock, hrLog: '' });
         setUpdatedHour('');
         setActive('AddFuel');
     };
 
     return (
-        <main className='wrapper'>
+        <div className='wrapper'>
             {loading === true && <Loading />}
             <span className='header'>
-                <h1>Fuel Tracker</h1>
+                <h1>Ultra Fuel</h1>
                 <svg aria-hidden='true' focusable='false' viewBox='0 0 100 100' preserveAspectRatio='none'>
                     <polygon
                         className='svg--sm'
@@ -552,7 +551,7 @@ function App() {
                     />
                 </svg>
             </span>
-            <button className='addNew' onClick={() => addFuelResetBtn()}>
+            <button className='addNew' onClick={() => addFuelBtn()}>
                 New Entry
             </button>
             <button
@@ -564,7 +563,7 @@ function App() {
 
             {/* these buttons display the logs of the selected third of the race */}
             <div className='raceSplits'>
-                <div className='hourbtns'>
+                <div className='splitbtns'>
                     <Morning hrs={morningHrs} setHr={setHr} />
                     <button
                         className='plus'
@@ -574,17 +573,9 @@ function App() {
                         <FaPlusCircle aria-hidden='true' />
                     </button>
                 </div>
-                <div className='plusWrap'>
-                    <button
-                        className='plus'
-                        aria-expanded={active === 'MorningChart' ? 'true' : 'false'}
-                        onClick={() => activeSplit('MorningChart')}
-                    >
-                        Morning Hours
-                    </button>
-                </div>
+                
 
-                <div className='hourbtns'>
+                <div className='splitbtns'>
                     <Afternoon hrs={afternoonHrs} setHr={setHr} />
                     <button
                         className='plus'
@@ -594,17 +585,32 @@ function App() {
                         <FaPlusCircle aria-hidden='true' />
                     </button>
                 </div>
-                <div className='plusWrap'>
+                <div className='sm-splitbtns '>
                     <button
-                        className='plus'
+                        className='split'
+                        aria-expanded={active === 'MorningChart' ? 'true' : 'false'}
+                        onClick={() => activeSplit('MorningChart')}
+                    >
+                        Morning Hours
+                    </button>
+                
+                    <button
+                        className='split'
                         aria-expanded={active === 'AfternoonChart' ? 'true' : 'false'}
                         onClick={() => activeSplit('AfternoonChart')}
                     >
                         Afternoon Hours
                     </button>
+                    <button
+                        className='split'
+                        aria-expanded={active === 'EveningChart' ? 'true' : 'false'}
+                        onClick={() => activeSplit('EveningChart')}
+                    >
+                        Evening Hours
+                    </button>
                 </div>
 
-                <div className='hourbtns'>
+                <div className='splitbtns'>
                     <Evening hrs={eveningHrs} setHr={setHr} />
                     <button
                         className='plus'
@@ -614,15 +620,7 @@ function App() {
                         <FaPlusCircle aria-hidden='true' />
                     </button>
                 </div>
-                <div className='plusWrap'>
-                    <button
-                        className='plus'
-                        aria-expanded={active === 'EveningChart' ? 'true' : 'false'}
-                        onClick={() => activeSplit('EveningChart')}
-                    >
-                        Evening Hours
-                    </button>
-                </div>
+                
             </div>
             {fuelGuide === true && (
                 <div className='fuel-guide' aria-expanded={fuelGuide === true ? 'true' : 'false'}>
@@ -733,12 +731,12 @@ function App() {
                     setMessage={setMessage}
                 />
             )}
-            <footer>
+            <div className='footer'>
                 <svg aria-hidden='true' focusable='false' viewBox='0 0 100 100' preserveAspectRatio='none'>
                     <polygon fill='#6c6c6c' points='0,100 100,0 100,100' />
                     <polygon fill='#6c6c6c' points='100,100 0,100 0,0' />
                 </svg>
-                <h2>About Fuel Tracker</h2>
+                <h2>About Ultra Fuel</h2>
                 <span className='sr-only'>Links are all external</span>
                 <p>
                     This web-app was created by{' '}
@@ -814,8 +812,8 @@ function App() {
                         </a>
                     </p>
                 </div>
-            </footer>
-        </main>
+            </div>
+        </div>
     );
 }
 

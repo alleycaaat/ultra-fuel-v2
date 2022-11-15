@@ -96,10 +96,10 @@ const Edit = ({
 
     return (
         <>
-            <div className='edit-mobile'>
-                <div className='top-block'>{time}</div>
-                <div className='m-row'>
-                    <div className='m-block'>
+            <div className='edit'>
+                <div className='top-row'>{time}</div>
+                <div className='row'>
+                    <div className='block'>
                         <h2>Water</h2>
                         {waterAmt > 0 ? (
                             <span>
@@ -112,7 +112,7 @@ const Edit = ({
                             <p> {waterAmt} ml </p>
                         )}
                     </div>
-                    <div className='m-block'>
+                    <div className='block'>
                         <h2>Tailwind</h2>
                         {twAmt > 0 ? (
                             <span>
@@ -126,7 +126,7 @@ const Edit = ({
                         )}
                     </div>
                 </div>
-                <div className='m-row'>
+                <div className='row'>
                     <div className='food-edit'>
                         <h2>Food</h2>
                         <ul>
@@ -157,8 +157,8 @@ const Edit = ({
                         )}
                     </div>
                 </div>
-                <div className='m-row'>
-                    <div className='m-block btns'>
+                <div className='row'>
+                    <div className='block buttons'>
                         <button value={id} onClick={() => handleSave()}>
                             Save
                         </button>

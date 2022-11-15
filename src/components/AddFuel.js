@@ -82,9 +82,9 @@ const AddFuel = ({
     return (
         <div className='chart'>
             {/*  MOBILE DISPLAY */}
-            <div className='m-add'>
+            <div className='sm-AddFuel'>
             <fieldset>
-                <div className='m-drops'>
+                <div className='drops'>
                     <label htmlFor='time'>Time</label>
                     <select
                         name='time'
@@ -99,7 +99,7 @@ const AddFuel = ({
                         ))}
                     </select>
                 </div>
-                <div className='m-drops'>
+                <div className='drops'>
                     <label htmlFor='water'>Water</label>
                     <select
                         name='water'
@@ -128,7 +128,7 @@ const AddFuel = ({
                         ))}
                     </select>
                 </div>
-                <div className='m-drops'>
+                <div className='drops'>
                     <label htmlFor='food'>Food</label>
                     <select
                         name='food'
@@ -167,7 +167,7 @@ const AddFuel = ({
                         )}
                     </select>
                 </div>
-                <div className='m-drops'>
+                <div className='drops'>
                     <div className='block'>
                         <option>Serving size: {servSize}</option>
                     </div>
@@ -176,7 +176,7 @@ const AddFuel = ({
             </div>
 
             {/* LARGE SCREEN DISPLAY */}
-            <div className='desktop addFuel'>
+            <div className='lg-AddFuel'>
             <fieldset>
             <div className='drops'>
                 <label htmlFor='time'>Time</label>

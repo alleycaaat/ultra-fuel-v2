@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Edit from '../Edit';
-import './chartstyle.css';
+
 
 const Chart = ({
     time,
@@ -44,22 +44,22 @@ const Chart = ({
             {!edit && (
                 <>
                     {/* mobile version */}
-                    <div className='mobile'>
+                    <div className='chartmobile'>
                         <div className='top-row'>{time}</div>
-                        <div className='m-row'>
-                            <div className='m-block'>
+                        <div className='row'>
+                            <div className='block'>
                                 <h2>Water</h2>
                                 <p>{water} ml</p>
                             </div>
-                            <div className='m-block'>
+                            <div className='block'>
                                 <h2>Tailwind</h2>
                                 <p>{tailwind} ml</p>
                             </div>
-                            <div className='m-block'>
+                            <div className='block'>
                                 <h2>kcal</h2>
                                 <p>{calories}</p>
                             </div>
-                            <div className='m-block btns'>
+                            <div className='block'>
                                 <button
                                     onClick={(e) => handleEdit(e)}
                                     value={hour}
@@ -68,8 +68,8 @@ const Chart = ({
                                 </button>
                             </div>
                         </div>
-                        <div className='m-row'>
-                            <div className='m-food-block'>
+                        <div className='row'>
+                            <div className='block-food'>
                                 <h2>Food</h2>
                                 <ul>
                                     {foodList.map((item, i) => (
@@ -78,24 +78,24 @@ const Chart = ({
                                 </ul>
                             </div>
                         </div>
-                        <div className='m-row'>
-                            <div className='m-block'>
+                        <div className='row'>
+                            <div className='block'>
                                 <h2>Prt</h2>
                                 <p>{protein} g</p>
                             </div>
-                            <div className='m-block'>
+                            <div className='block'>
                                 <h2>K</h2>
                                 <p>{potassium} mg</p>
                             </div>
-                            <div className='m-block'>
+                            <div className='block'>
                                 <h2>Ca</h2>
                                 <p>{calcium} mg</p>
                             </div>
-                            <div className='m-block'>
+                            <div className='block'>
                                 <h2>Na</h2>
                                 <p>{sodium} mg</p>
                             </div>
-                            <div className='m-block'>
+                            <div className='block'>
                                 <h2>Mg</h2>
                                 <p>{magnesium} mg</p>
                             </div>
@@ -103,7 +103,7 @@ const Chart = ({
                     </div>
 
                     {/* desktop version */}
-                    <div className='desktop'>
+                    <div className='chartdesktop'>
                         <div className='row'>
                             <div className='block'>
                                 <p className='time'>{time}</p>
@@ -124,7 +124,6 @@ const Chart = ({
                                 <button
                                     onClick={(e) => handleEdit(e)}
                                     value={hour}
-                                    className='editBtn'
                                 >
                                     Edit
                                 </button>
@@ -132,7 +131,7 @@ const Chart = ({
                         </div>
 
                         <div className='row'>
-                            <div className='block food'>
+                            <div className='block-food'>
                                 <h2>Food</h2>
                                 <ul>
                                     {foodList.map((item, i) => (

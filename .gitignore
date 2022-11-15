@@ -24,5 +24,6 @@ yarn-error.log*
 
 .env
 hours.json
+Hours.js
 # Local Netlify folder
 .netlify
