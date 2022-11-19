@@ -27,3 +27,5 @@ hours.json
 Hours.js
 # Local Netlify folder
 .netlify
+
+/dups

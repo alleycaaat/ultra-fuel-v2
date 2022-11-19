@@ -21,6 +21,7 @@ const Edit = ({
     const [twAmt, setTwAmt] = useState(twDup);
     const [servAmt, setServAmt] = useState(servDup);
 
+    //compare food and serving arrays to see if they're different
     const matching = (a, b) => {
         for (let el in a) {
             return a[el] === b[el];
@@ -104,8 +105,8 @@ const Edit = ({
                         {waterAmt > 0 ? (
                             <span>
                                 {waterAmt} ml
-                                <button onClick={handleWater}>
-                                    <FaMinusCircle />
+                                <button onClick={handleWater} aria-label='subtract 100ml water'>
+                                    <FaMinusCircle aria-hidden='true'/>
                                 </button>
                             </span>
                         ) : (
@@ -117,8 +118,8 @@ const Edit = ({
                         {twAmt > 0 ? (
                             <span>
                                 {twAmt} ml
-                                <button onClick={handleTW}>
-                                    <FaMinusCircle />
+                                <button onClick={handleTW} aria-label='subtract 100ml Tailwind'>
+                                    <FaMinusCircle aria-hidden='true'/>
                                 </button>
                             </span>
                         ) : (
@@ -147,9 +148,10 @@ const Edit = ({
                                         <button
                                             name={i}
                                             value={servs}
+                                            aria-label='remove 1 serving'
                                             onClick={(e) => handleServings(e)}
                                         >
-                                            <FaMinusCircle />
+                                            <FaMinusCircle aria-hidden='true'/>
                                         </button>
                                     </li>
                                 ))}

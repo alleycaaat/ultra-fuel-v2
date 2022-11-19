@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Edit from '../Edit';
 
-
 const Chart = ({
     time,
     hour,
@@ -23,7 +22,9 @@ const Chart = ({
     const [edit, setEdit] = useState(false);
     const foodList = food === '' ? [''] : food;
 
-    const handleEdit = (e) => {
+    const handleEdit = () => {
+        console.log(edit)
+        console.log('handleEdit',water === 0, tailwind === 0,food.length === 0)
         if (water === 0 && tailwind === 0) {
             if (food.length === 0) {
                 setMessage('Nothing to edit');

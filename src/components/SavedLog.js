@@ -1,5 +1,5 @@
 import Chart from './charts/Chart';
-const SavedLog = ({ log, time, save, setEditing }) => {
+const SavedLog = ({ log, time, save, setEditing, setMessage }) => {
     let clock = time[log[0].hour];
 
     return (
@@ -22,6 +22,7 @@ const SavedLog = ({ log, time, save, setEditing }) => {
                         id={data.id}
                         save={save}
                         setEditing={setEditing}
+                        setMessage={setMessage}
                     />
                 </div>
             ))}

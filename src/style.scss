@@ -184,7 +184,7 @@ body {
         height: 21px;
         text-align: center;
         margin-top: 7px;
-        color: $blue;
+        color: $darkBlue;
         font-weight: bold;
     }
     //new entry button in .wrapper on App.js
@@ -227,7 +227,8 @@ body {
         }
     }
     //notes for race day in .wrapper on App.js
-    .fuel-guide {
+    .fuel-guide,
+    .alert {
         display: flex;
         flex-direction: column;
         width: 80%;

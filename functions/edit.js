@@ -1,6 +1,8 @@
 const faunadb = require('faunadb');
 const q = faunadb.query;
 
+//edit.js adds new entries to an hourly log and allows for the editing existing ones
+
 //regex returns just the id
 function getKey(path) {
     return path.match(/([^\/]*)\/*$/)[0];

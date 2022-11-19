@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useState, useEffect, useRef } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
 import { BiLinkExternal } from 'react-icons/bi'
@@ -15,22 +15,26 @@ import Hour from './components/Hour';
 import Loading from './components/loading';
 
 function App() {
-    const [active, setActive] = useState('');
     const [fuel, setFuel] = useState();
     const [hourLog, setHourLog] = useState();
+
+    const [editing, setEditing] = useState(false);
+    const [readMore, setReadMore] = useState(false);
     const [fuelGuide, setFuelGuide] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const [active, setActive] = useState('');
     const [updatedHour, setUpdatedHour] = useState('');
+    const [keys, setKeys] = useState();
+    const [log, setLog] = useState();
+    const [message, setMessage] = useState();
     const [soloHr, setSoloHr] = useState({
         hrLog: '',
         clock: '',
     });
     const { hrLog, clock } = soloHr;
-    const [loading, setLoading] = useState(true);
-    const [keys, setKeys] = useState();
-    const [log, setLog] = useState();
-    const [message, setMessage] = useState();
-    const [editing, setEditing] = useState(false);
-    const [readMore, setReadMore] = useState(false);
+    const [alertHour, setAlertHour] = useState();
+    const [alertStatus, setAlertStatus] = useState(false)
 
     const loadFood = async () => {
         await api.getfuel().then((fuel) => {
@@ -47,6 +51,7 @@ function App() {
         await api.gethours().then((hours) => {
             let hourArr = [];
             let hourKey = [];
+        
             hours.map((hour, i) => {
                 const key = getId(hour);
                 hourKey.push(key);
@@ -66,7 +71,7 @@ function App() {
 
     useEffect(() => {
         if (isFirstRender.current) {
-            console.log('food loaded');
+            console.log('Food loaded');
             isFirstRender.current = false; //toggle flag after first render/mounting
             return;
         }
@@ -77,9 +82,15 @@ function App() {
         loadHours();
     }, []);
 
-    setTimeout(() => {
-        setMessage('');
-    }, 4300);
+    useEffect(() => {
+        const resetMsg = setTimeout(() => setMessage(''), 3000);
+        return () => clearTimeout(resetMsg)
+    })
+
+    useEffect(() => {
+        const resetAlert = setTimeout(() => setAlertStatus(false), 1000);
+        return () => clearTimeout(resetAlert)
+    })
 
     //handles solorHr which displays an individual hour based
     //on clicking a button in raceSplits
@@ -87,7 +98,7 @@ function App() {
         let clock = e.target.value,
             hr = time.indexOf(clock);
 
-        //editing a split
+        //if a split is expanded and individual hour is selected from raceSplits
         if (active !== '' && editing === true) {
             setActive('');
             setSoloHr({ hrLog: [hourLog[hr]], clock: clock });
@@ -124,7 +135,6 @@ function App() {
         setEditing(false);
         setSoloHr({ hrLog: '', clock: '' });
         setUpdatedHour('');
-        setLoading(true);
         setActive(e);
 
         //get the first part of the name of the selected split
@@ -144,7 +154,6 @@ function App() {
         if (lower === 'eveningHrs') {
             setLog(hourLog.slice(10));
         }
-        setLoading(false);
     };
 
     const water = ['0', '100', '200', '300', '400', '500'];
@@ -202,6 +211,7 @@ function App() {
     //add only liquid
     const onlyWater = (data) => {
         setUpdatedHour('');
+        setAlertHour(data.hour)
         let oldHour = [hourLog[data.hour]],
             id = keys[data.hour],
             waterLogged;
@@ -260,23 +270,23 @@ function App() {
     //edit fuel
     const saveEdit = (servings, changedQty, foods, hour, waterAmt, twQty) => {
         setEditing(false);
-
+        setAlertHour(time[hour])
         //sum up the amount of foods changed
         let sum = changedQty.reduce((a, b) => a + b, 0);
 
         let old = hourLog[hour],
             id = keys[hour],
             prevHourLog = {
-                calcium: old.calcium,
-                calories: old.calories,
+                water: waterAmt,
                 food: old.food,
-                magnesium: old.magnesium,
+                calories: old.calories,
                 potassium: old.potassium,
+                sodium: old.sodium,
+                magnesium: old.magnesium,
+                calcium: old.calcium,
                 protein: old.protein,
                 servings: old.servings,
-                sodium: old.sodium,
                 tailwindQty: old.tailwindQty,
-                water: waterAmt,
             };
 
         //if only water is being removed, save prevHourLog
@@ -302,8 +312,8 @@ function App() {
                     calories: old.calories - tw.calories * amt,
                     potassium: old.potassium - tw.potassium * amt,
                     sodium: old.sodium - tw.sodium * amt,
-                    calcium: old.calcium - tw.calcium * amt,
                     magnesium: old.magnesium - tw.magnesium * amt,
+                    calcium: old.calcium - tw.calcium * amt,
                     protein: old.protein,
                     servings: old.servings,
                     tailwindQty: twQty,
@@ -367,21 +377,23 @@ function App() {
             }
             return removeAmts;
         });
-
+        if (modFoodList.length === 0) {
+            modFoodList = ''
+            newServings = 0}
         let newHour = {
             hour: hour,
-            calcium: removeAmts.calcium,
-            calories: removeAmts.calories,
-            food: modFoodList,
-            servings: newServings,
-            magnesium: removeAmts.magnesium,
-            potassium: removeAmts.potassium,
-            protein: removeAmts.protein,
-            sodium: removeAmts.sodium,
-            tailwindQty: old.tailwindQty,
             water: waterAmt,
+            food: modFoodList,
+            calories: removeAmts.calories,
+            potassium: removeAmts.potassium,
+            sodium: removeAmts.sodium,
+            magnesium: removeAmts.magnesium,
+            calcium: removeAmts.calcium,
+            protein: removeAmts.protein,
+            servings: newServings,
+            tailwindQty: old.tailwindQty,
         };
-
+        
         if (twQty === prevHourLog.tailwindQty) {
             console.log('no trailwind removed');
             saveAPI(id, newHour);
@@ -413,14 +425,15 @@ function App() {
         var newHour = fuel.filter((o) => {
             return o.name.includes(data.name);
         });
-
+        
         //get the previous hour log
         let oldHour = [hourLog[data.hour]],
             id = keys[data.hour],
             updateHour = [],
             twHr = [];
         const orgFood = oldHour[0].food;
-
+        
+        setAlertHour(time[data.hour])
         //duplicate the objects to iterate them
         let old = { ...oldHour[0] },
             now = { ...newHour[0] };
@@ -487,8 +500,8 @@ function App() {
                 calories: update.calories + tw.calories * amt,
                 potassium: update.potassium + tw.potassium * amt,
                 sodium: update.sodium + tw.sodium * amt,
-                calcium: update.calcium + tw.calcium * amt,
                 magnesium: update.magnesium + tw.magnesium * amt,
+                calcium: update.calcium + tw.calcium * amt,
                 protein: update.protein,
                 servings: foodQty,
                 tailwindQty: twQty,
@@ -499,17 +512,20 @@ function App() {
     };
 
     const saveAPI = async (id, data) => {
+        console.log('API CALL')
         setLoading(true);
+        setAlertStatus(true);
         setSoloHr({ hrLog: '', clock: '' });
-        console.log('API CALL');
-        setEditing(false);
+        setUpdatedHour([data])
+        //setUpdatedHour('');
         //need to set hrLog to empty or things can end up going negative removing fuel
-        setHourLog('');
+        //setHourLog('');
         setActive('');
-
+        
         await api
             .edit(id, data)
             .then((res) => {
+                console.log('API response', res)
                 loadHours();
             })
             .catch((err) => {
@@ -574,7 +590,6 @@ function App() {
                     </button>
                 </div>
                 
-
                 <div className='splitbtns'>
                     <Afternoon hrs={afternoonHrs} setHr={setHr} />
                     <button
@@ -585,6 +600,18 @@ function App() {
                         <FaPlusCircle aria-hidden='true' />
                     </button>
                 </div>
+
+                <div className='splitbtns'>
+                    <Evening hrs={eveningHrs} setHr={setHr} />
+                    <button
+                        className='plus'
+                        aria-label='show all evening hour options'
+                        onClick={() => activeSplit('EveningChart')}
+                    >
+                        <FaPlusCircle aria-hidden='true' />
+                    </button>
+                </div>
+
                 <div className='sm-splitbtns '>
                     <button
                         className='split'
@@ -607,17 +634,6 @@ function App() {
                         onClick={() => activeSplit('EveningChart')}
                     >
                         Evening Hours
-                    </button>
-                </div>
-
-                <div className='splitbtns'>
-                    <Evening hrs={eveningHrs} setHr={setHr} />
-                    <button
-                        className='plus'
-                        aria-label='show all evening hour options'
-                        onClick={() => activeSplit('EveningChart')}
-                    >
-                        <FaPlusCircle aria-hidden='true' />
                     </button>
                 </div>
                 
@@ -673,6 +689,12 @@ function App() {
                 </div>
             )}
             <span className='messageCentre' aria-live='polite'>{message}</span>
+            
+            {alertStatus === true && (
+                <div className='alert' aria-expanded={fuelGuide === true ? 'true' : 'false'}>
+                <h3>Changes to {alertHour} were saved</h3>
+                </div>
+            )}
             {active === 'AddFuel' && (
                 <AddFuel
                     fuel={fuel}
@@ -719,6 +741,7 @@ function App() {
                     log={updatedHour}
                     save={saveEdit}
                     setEditing={setEditing}
+                    setMessage={setMessage}
                 />
             )}
             {/* this displays the individual hour selected from the raceSplits buttons */}
@@ -737,7 +760,7 @@ function App() {
                     <polygon fill='#6c6c6c' points='100,100 0,100 0,0' />
                 </svg>
                 <h2>About Ultra Fuel</h2>
-                <span className='sr-only'>Links are all external</span>
+                <span className='sr-only'>The links below are all external</span>
                 <p>
                     This web-app was created by{' '}
                     <a
@@ -748,10 +771,11 @@ function App() {
                         AC Hulslander
                         <BiLinkExternal aria-hidden='true' className='footericons' alt='external link'/>
                     </a>{' '}
-                    as a means to keep track of nutrition during an
+                    as a means to keep track of nutrition and hydration during an
                     ultramarathon.{' '}
-                    { /* the checkbox doesn't display, so the label acts as the clickable element.  it's wrapped in a button so keyboard users can access it*/ }
+                    { /* the checkbox doesn't display, so the label acts as the clickable element.  it's wrapped in a button so keyboard users can access it */ }
                     <button>
+                    {/* 17 Nov 2022 - htmlFor throws an error, 'React does not recognize the htmlFor prop on an element...' changing to a lowercase F also throws an error, 'Did you mean htmlFor?' so, y'know. */}
                     <label htmlFor='toggle'>
                         {readMore ? 'Show less...' : 'Read more...'}
                     </label>
@@ -764,32 +788,24 @@ function App() {
                     id='toggle'
                     onClick={() => setReadMore(!readMore)}
                 />
-                <div className='footerSlide'>
+                <div className='footerSlide' style={{display: readMore ? 'block' : 'none'}}>
                     <p>
-                        Fuel Tracker is a Jamstack web-app relying on React for
-                        the front-end and SCSS; it is responsive, optimized and
-                        addresses a11y. Fetch API calls are made to the Fauna
-                        database to retrieve the foods and hourly logs. The
-                        foods are saved as an object and data is handled with
-                        map and reduce functions. Ternary operators are
+                        Ultra Fuel is a Jamstack web-app developed with React for
+                        the front-end and SCSS for styling; it is designed for mobile-fist, responsive, optimized and addresses several issues that could impare accessibility.</p>
+
+                        <p>Fetch API calls are made to the Fauna
+                        database to retrieve the foods collection and hourly logs collection. The
+                        foods are saved as an object, and data is handled with the
+                        map and reduce methods. Ternary operators are
                         frequently utilized to reduce the line count and speed
-                        up operations. React Hooks are heavily used, as well as
-                        the useEffect and useRef Hooks; the latter is used in
+                        up operations. React Hooks are also heavily used, specifically useState, useEffect and useRef; the latter is used in
                         conjunction with the useEffect Hook to only load the
-                        food on initial render. During some functions a loading
-                        screen shows to allow the Fetch API calls to finish to
-                        prevent errors.
+                        foods collection on initial render. During some functions a loading
+                        screen shows to allow the API calls to the serverless functions to finish  and prevent errors.
                     </p>
                     <p>
                         Currently, this web-app is insecure in that anyone can
-                        add or remove food to any hour. This is done for
-                        demonstration purposes. In the future a log-in option
-                        will be added, as well as the ability for a user to add
-                        new foods to the database. At first this will be
-                        accomplished by the user adding the individual
-                        nutritional levels of the food item, the end-goal is to
-                        utilize an API to simply look up food and add it that
-                        way.
+                        add or remove food to any hour.  However, the database key is <strong>not</strong> exposed. This is done for demonstration purposes.  It is also catered to the hours of the event I developed the app for.  The end goal is to develop Ultra Fuel into a mobile app, and offer it for download.  Several changes will be made before that happens, such as adding a log-in option, and the ability for a user to add new foods to the database. The end-goal is to utilize an API to simply search for a food and add it, as well as having a manual option.
                     </p>
                     <p className='last'>
                         Full code on{' '}

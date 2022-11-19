@@ -1,41 +1,38 @@
-const getfuel = () => {
-    return fetch('/.netlify/functions/getfuel').then((response) => {
-        return response.json();
-    });
+/* API methods will call /functions */
+
+const getfuel = async () => {
+    const response = await fetch('/.netlify/functions/getfuel');
+    return await response.json();
 };
 
-const gethours = () => {
-    return fetch('/.netlify/functions/gethours').then((response) => {
-        return response.json();
-    });
+const gethours = async () => {
+    const response = await fetch('/.netlify/functions/gethours');
+    return await response.json();
 };
 
-const create = (data) => {
-    return fetch('/.netlify/functions/create', {
+const create = async (data) => {
+    const response = await fetch('/.netlify/functions/create', {
         body: JSON.stringify(data),
         method: 'POST',
-    }).then((response) => {
-        return response.json();
     });
+    return await response.json();
 };
 
-const erase = (id) => {
-    return fetch('/.netlify/functions/erase', {
+const erase = async (id) => {
+    const response = await fetch('/.netlify/functions/erase', {
         method: 'POST',
         body: JSON.stringify(id),
-    }).then((response) => {
-        return response.json();
     });
+    return await response.json();
 };
 
-const edit = (id, data) => {
+const edit = async (id, data) => {
     //need to add id to end of the url so the backend can get it
-    return fetch(`/.netlify/functions/edit/${id}`, {
+    const response = await fetch(`/.netlify/functions/edit/${id}`, {
         method: 'POST',
         body: JSON.stringify(data),
-    }).then((response) => {
-        return response.json();
     });
+    return await response.json();
 };
 
 const api = {

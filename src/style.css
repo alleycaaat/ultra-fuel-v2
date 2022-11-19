@@ -120,7 +120,7 @@ body {
   height: 21px;
   text-align: center;
   margin-top: 7px;
-  color: #0f87af;
+  color: #03536d;
   font-weight: bold;
 }
 .wrapper .addNew {
@@ -160,41 +160,49 @@ body {
 .wrapper .fuelBtn:focus {
   outline: 1px solid #03536d;
 }
-.wrapper .fuel-guide {
+.wrapper .fuel-guide,
+.wrapper .alert {
   display: flex;
   flex-direction: column;
   width: 80%;
   margin: auto;
   font-size: 17px;
 }
-.wrapper .fuel-guide .ul-row {
+.wrapper .fuel-guide .ul-row,
+.wrapper .alert .ul-row {
   display: flex;
   flex-direction: column;
 }
-.wrapper .fuel-guide .ul-row ul {
+.wrapper .fuel-guide .ul-row ul,
+.wrapper .alert .ul-row ul {
   margin: auto;
 }
-.wrapper .fuel-guide p {
+.wrapper .fuel-guide p,
+.wrapper .alert p {
   text-align: center;
   padding-top: 7px;
 }
-.wrapper .fuel-guide h2 {
+.wrapper .fuel-guide h2,
+.wrapper .alert h2 {
   text-align: center;
   margin: 5px 0;
   font-size: 19px;
 }
-.wrapper .fuel-guide h3 {
+.wrapper .fuel-guide h3,
+.wrapper .alert h3 {
   text-align: center;
   margin: 5px 0;
   font-size: 18px;
 }
-.wrapper .fuel-guide ul.cir {
+.wrapper .fuel-guide ul.cir,
+.wrapper .alert ul.cir {
   list-style-type: circle;
   padding-left: 35px;
   background-color: rgba(255, 161, 61, 0.3);
   border-radius: 5px;
 }
-.wrapper .fuel-guide li {
+.wrapper .fuel-guide li,
+.wrapper .alert li {
   font-size: 16px;
 }
 .wrapper .raceSplits {

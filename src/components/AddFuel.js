@@ -22,7 +22,6 @@ const AddFuel = ({
     //////////remember that the qty is multiplied by the serving
     //so 2 qty of soup, which is 1/4 can means
     //consuming 1/2 can
-
     const handleLog = (e) => {
         const { name, value } = e.target;
         setFuelConsumed({ ...fuelConsumed, [name]: value });
@@ -37,6 +36,8 @@ const AddFuel = ({
 
         //if food is unselected, remove the serving size
         if (value === '') {
+            //also need to set the food back to an empty string, if a food is selected and then it's changed to the empty option, the food is still saved in fuelConsumed and will prompt user to enter a serving size
+            setFuelConsumed({...fuelConsumed, food: ''})
             setServSize('');
             return;
         }
@@ -229,7 +230,7 @@ const AddFuel = ({
                     onChange={handleFood}
                     className='dropdown'
                 >
-                    {fuel.map((foods, idx) => (
+                {fuel.map((foods, idx) => (
                         <option
                             key={idx}
                             index={idx}
@@ -238,7 +239,8 @@ const AddFuel = ({
                         >
                             {foods.name}
                         </option>
-                    ))}
+                    )
+                    )}
                 </select>
                 <div className='block'>
                     <option>Serving size: {servSize}</option>
