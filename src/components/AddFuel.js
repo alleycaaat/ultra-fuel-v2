@@ -9,6 +9,7 @@ const AddFuel = ({
     onlyWater,
     setMessage,
 }) => {
+    console.log('ADDFUEL fuel:',fuel)
     const [servSize, setServSize] = useState('');
     const qty = [0, 1, 2, 3, 4, 5];
     const [fuelConsumed, setFuelConsumed] = useState({

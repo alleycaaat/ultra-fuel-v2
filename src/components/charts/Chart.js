@@ -23,8 +23,6 @@ const Chart = ({
     const foodList = food === '' ? [''] : food;
 
     const handleEdit = () => {
-        console.log(edit)
-        console.log('handleEdit',water === 0, tailwind === 0,food.length === 0)
         if (water === 0 && tailwind === 0) {
             if (food.length === 0) {
                 setMessage('Nothing to edit');

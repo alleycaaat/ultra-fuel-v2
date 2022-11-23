@@ -532,9 +532,9 @@ function App() {
                 console.log('API error', err);
             });
     };
-
+console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',clock)
     const addFuelBtn = () => {
-        setSoloHr({ ...clock, hrLog: '' });
+        setSoloHr({ clock: '', hrLog: '' });
         setUpdatedHour('');
         setActive('AddFuel');
     };
