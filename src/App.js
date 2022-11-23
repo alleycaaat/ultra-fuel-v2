@@ -40,6 +40,7 @@ function App() {
         await api
         .getfuel()
         .then((fuel) => {
+            console.log('loadFood:',fuel)
             let fuelList = [];
             fuel.map((fuels, i) => {
                 fuelList.push(fuel[i].data);

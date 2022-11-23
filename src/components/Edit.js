@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
+
 const Edit = ({
     time,
     water,

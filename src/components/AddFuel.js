@@ -10,6 +10,7 @@ const AddFuel = ({
     setMessage,
 }) => {
     console.log('ADDFUEL fuel:',fuel)
+    console.log(h20,tailwind,times)
     const [servSize, setServSize] = useState('');
     const qty = [0, 1, 2, 3, 4, 5];
     const [fuelConsumed, setFuelConsumed] = useState({
