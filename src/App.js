@@ -37,18 +37,25 @@ function App() {
     const [alertStatus, setAlertStatus] = useState(false)
 
     const loadFood = async () => {
-        await api.getfuel().then((fuel) => {
+        await api
+        .getfuel()
+        .then((fuel) => {
             let fuelList = [];
             fuel.map((fuels, i) => {
                 fuelList.push(fuel[i].data);
                 return fuelList;
             });
             setFuel(fuelList);
-        });
+        })
+        .catch((err) => {
+                console.log('loadFood API error', err);
+            });
     };
 
     const loadHours = async () => {
-        await api.gethours().then((hours) => {
+        await api
+        .gethours()
+        .then((hours) => {
             let hourArr = [];
             let hourKey = [];
         
@@ -64,18 +71,22 @@ function App() {
             });
             setLoading(false);
             setHourLog(hourArr);
-        });
+        })
+        .catch((err) => {
+                console.log('loadHours API error', err);
+            });
     };
 
     const isFirstRender = useRef(true);
-
+    console.log('fooooood:',fuel)
     useEffect(() => {
         if (isFirstRender.current) {
             console.log('Food loaded');
+            console.log(isFirstRender,isFirstRender.current)
+        loadFood();
             isFirstRender.current = false; //toggle flag after first render/mounting
             return;
         }
-        loadFood();
     }, []);
 
     useEffect(() => {
@@ -525,11 +536,11 @@ function App() {
         await api
             .edit(id, data)
             .then((res) => {
-                console.log('API response', res)
+                console.log('save API response', res)
                 loadHours();
             })
             .catch((err) => {
-                console.log('API error', err);
+                console.log('save API error', err);
             });
     };
 console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',clock)
