@@ -19,6 +19,7 @@ const Chart = ({
     setEditing,
     setMessage,
 }) => {
+    
     const [edit, setEdit] = useState(false);
     const foodList = food === '' ? [''] : food;
 

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
 import { BiLinkExternal } from 'react-icons/bi'
@@ -13,6 +12,10 @@ import SavedLog from './components/SavedLog';
 import api from './api';
 import Hour from './components/Hour';
 import Loading from './components/loading';
+import { SplitButton } from './components/UI/SplitButton';
+import SplitChart from './components/charts/SplitChart';
+import SetSplits from './components/raceSplits/SetSplits';
+import { SmSplitButton } from './components/UI/SmSplitButton';
 
 function App() {
     const [fuel, setFuel] = useState();
@@ -33,14 +36,11 @@ function App() {
         clock: '',
     });
     const { hrLog, clock } = soloHr;
-    const [alertHour, setAlertHour] = useState();
-    const [alertStatus, setAlertStatus] = useState(false)
 
     const loadFood = async () => {
         await api
         .getfuel()
         .then((fuel) => {
-            console.log('loadFood:',fuel)
             let fuelList = [];
             fuel.map((fuels, i) => {
                 fuelList.push(fuel[i].data);
@@ -59,7 +59,7 @@ function App() {
         .then((hours) => {
             let hourArr = [];
             let hourKey = [];
-        
+
             hours.map((hour, i) => {
                 const key = getId(hour);
                 hourKey.push(key);
@@ -79,12 +79,9 @@ function App() {
     };
 
     const isFirstRender = useRef(true);
-    console.log('fooooood:',fuel)
     useEffect(() => {
         if (isFirstRender.current) {
-            console.log('Food loaded');
-            console.log(isFirstRender,isFirstRender.current)
-        loadFood();
+            loadFood();
             isFirstRender.current = false; //toggle flag after first render/mounting
             return;
         }
@@ -97,11 +94,6 @@ function App() {
     useEffect(() => {
         const resetMsg = setTimeout(() => setMessage(''), 3000);
         return () => clearTimeout(resetMsg)
-    })
-
-    useEffect(() => {
-        const resetAlert = setTimeout(() => setAlertStatus(false), 1000);
-        return () => clearTimeout(resetAlert)
     })
 
     //handles solorHr which displays an individual hour based
@@ -223,7 +215,6 @@ function App() {
     //add only liquid
     const onlyWater = (data) => {
         setUpdatedHour('');
-        setAlertHour(data.hour)
         let oldHour = [hourLog[data.hour]],
             id = keys[data.hour],
             waterLogged;
@@ -282,7 +273,6 @@ function App() {
     //edit fuel
     const saveEdit = (servings, changedQty, foods, hour, waterAmt, twQty) => {
         setEditing(false);
-        setAlertHour(time[hour])
         //sum up the amount of foods changed
         let sum = changedQty.reduce((a, b) => a + b, 0);
 
@@ -405,7 +395,7 @@ function App() {
             servings: newServings,
             tailwindQty: old.tailwindQty,
         };
-        
+
         if (twQty === prevHourLog.tailwindQty) {
             console.log('no trailwind removed');
             saveAPI(id, newHour);
@@ -437,15 +427,14 @@ function App() {
         var newHour = fuel.filter((o) => {
             return o.name.includes(data.name);
         });
-        
+
         //get the previous hour log
         let oldHour = [hourLog[data.hour]],
             id = keys[data.hour],
             updateHour = [],
             twHr = [];
         const orgFood = oldHour[0].food;
-        
-        setAlertHour(time[data.hour])
+
         //duplicate the objects to iterate them
         let old = { ...oldHour[0] },
             now = { ...newHour[0] };
@@ -524,16 +513,11 @@ function App() {
     };
 
     const saveAPI = async (id, data) => {
-        console.log('API CALL')
         setLoading(true);
-        setAlertStatus(true);
         setSoloHr({ hrLog: '', clock: '' });
         setUpdatedHour([data])
-        //setUpdatedHour('');
-        //need to set hrLog to empty or things can end up going negative removing fuel
-        //setHourLog('');
         setActive('');
-        
+
         await api
             .edit(id, data)
             .then((res) => {
@@ -544,7 +528,7 @@ function App() {
                 console.log('save API error', err);
             });
     };
-console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',clock)
+
     const addFuelBtn = () => {
         setSoloHr({ clock: '', hrLog: '' });
         setUpdatedHour('');
@@ -592,47 +576,23 @@ console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',cloc
             {/* these buttons display the logs of the selected third of the race */}
             <div className='raceSplits'>
                 <div className='splitbtns'>
-                    <Morning hrs={morningHrs} setHr={setHr} />
-                    <button
-                        className='plus'
-                        aria-label='show all morning hour options'
-                        onClick={() => activeSplit('MorningChart')}
-                    >
-                        <FaPlusCircle aria-hidden='true' />
-                    </button>
-                </div>
-                
-                <div className='splitbtns'>
-                    <Afternoon hrs={afternoonHrs} setHr={setHr} />
-                    <button
-                        className='plus'
-                        aria-label='show all afternoon hour options'
-                        onClick={() => activeSplit('AfternoonChart')}
-                    >
-                        <FaPlusCircle aria-hidden='true' />
-                    </button>
+                    <SetSplits hrs={morningHrs} setHr={setHr} />
+                    <SplitButton time={'morning'} onClick={() => activeSplit('MorningChart')} />
                 </div>
 
                 <div className='splitbtns'>
-                    <Evening hrs={eveningHrs} setHr={setHr} />
-                    <button
-                        className='plus'
-                        aria-label='show all evening hour options'
-                        onClick={() => activeSplit('EveningChart')}
-                    >
-                        <FaPlusCircle aria-hidden='true' />
-                    </button>
+                    <SetSplits hrs={afternoonHrs} setHr={setHr} />
+                    <SplitButton time={'afternoon'} onClick={() => activeSplit('AfternoonChart')} />
+                </div>
+
+                <div className='splitbtns'>
+                    <SetSplits hrs={eveningHrs} setHr={setHr} />
+                    <SplitButton time={'evening'} onClick={() => activeSplit('EveningChart')} />
                 </div>
 
                 <div className='sm-splitbtns '>
-                    <button
-                        className='split'
-                        aria-expanded={active === 'MorningChart' ? 'true' : 'false'}
-                        onClick={() => activeSplit('MorningChart')}
-                    >
-                        Morning Hours
-                    </button>
-                
+                    <SmSplitButton aria={active === 'MorningChart' ? 'true' : 'false'} onClick={() => activeSplit('MorningChart')}>Morning Hours</SmSplitButton>
+
                     <button
                         className='split'
                         aria-expanded={active === 'AfternoonChart' ? 'true' : 'false'}
@@ -648,9 +608,9 @@ console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',cloc
                         Evening Hours
                     </button>
                 </div>
-                
+
             </div>
-            {fuelGuide === true && (
+            {fuelGuide && (
                 <div className='fuel-guide' aria-expanded={fuelGuide === true ? 'true' : 'false'}>
                     <div className='ul-row'>
                         <ul>
@@ -701,12 +661,7 @@ console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',cloc
                 </div>
             )}
             <span className='messageCentre' aria-live='polite'>{message}</span>
-            
-            {alertStatus === true && (
-                <div className='alert' aria-expanded={fuelGuide === true ? 'true' : 'false'}>
-                <h3>Changes to {alertHour} were saved</h3>
-                </div>
-            )}
+
             {active === 'AddFuel' && (
                 <AddFuel
                     fuel={fuel}
@@ -746,7 +701,7 @@ console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',cloc
                     setMessage={setMessage}
                 />
             )}
-            {/* when an new entry is added, this section is activated to show the  hour's log */}
+            {/* when an new entry is added, this section is activated to show the hour's log */}
             {updatedHour !== '' && (
                 <SavedLog
                     time={time}
@@ -803,26 +758,25 @@ console.log('SOLO:',soloHr,'UPDATED:',updatedHour,'ACTIVE:',active,'CLOCK:',cloc
                 <div className='footerSlide' style={{display: readMore ? 'block' : 'none'}}>
                     <p>
                         Ultra Fuel is a Jamstack web-app developed with React for
-                        the front-end and SCSS for styling; it is designed for mobile-fist, responsive, optimized and addresses several issues that could impare accessibility.</p>
-
-                        <p>Fetch API calls are made to the Fauna
-                        database to retrieve the foods collection and hourly logs collection. The
-                        foods are saved as an object, and data is handled with the
-                        map and reduce methods. Ternary operators are
+                        the front-end and SCSS for styling; it is designed from a mobile-fist perspective, is responsive, optimized and addresses several issues that could impare accessibility.
+                    </p>
+                    <p>
+                        Fetch API calls are made to the Fauna
+                        database to retrieve the foods collection and hourly logs collection. The foods are saved as an object, and data is handled with the map and reduce methods. Ternary operators are
                         frequently utilized to reduce the line count and speed
                         up operations. React Hooks are also heavily used, specifically useState, useEffect and useRef; the latter is used in
                         conjunction with the useEffect Hook to only load the
                         foods collection on initial render. During some functions a loading
-                        screen shows to allow the API calls to the serverless functions to finish  and prevent errors.
+                        screen shows to allow the API calls to the serverless functions to finish and prevent errors.
                     </p>
                     <p>
                         Currently, this web-app is insecure in that anyone can
-                        add or remove food to any hour.  However, the database key is <strong>not</strong> exposed. This is done for demonstration purposes.  It is also catered to the hours of the event I developed the app for.  The end goal is to develop Ultra Fuel into a mobile app, and offer it for download.  Several changes will be made before that happens, such as adding a log-in option, and the ability for a user to add new foods to the database. The end-goal is to utilize an API to simply search for a food and add it, as well as having a manual option.
+                        add or remove food to any hour.  (However, the database key is <strong>not</strong> exposed.) This is done for demonstration purposes.  It is also catered to the hours of the event I developed the app for.  The end goal is to develop Ultra Fuel into a mobile app, and offer it for download.  Several changes will be made before that happens, such as adding a log-in option, and the ability for a user to add new foods to the database. The end-goal is to utilize an API to simply search for a food and add it, as well as having a manual option.
                     </p>
                     <p className='last'>
                         Full code on{' '}
                         <a
-                            href='https://github.com/alleycaaat'
+                            href='https://github.com/alleycaaat/ultra-fuel'
                             target='_blank'
                             rel='noreferrer'
                         >
