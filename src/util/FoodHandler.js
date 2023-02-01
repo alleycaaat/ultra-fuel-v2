@@ -2,10 +2,10 @@ const FoodHandler = (fooddata) => {
 
     let nutriInfo = fooddata.food,
         amt = fooddata.amt,
-        data = fooddata.data,
-        id = fooddata.id;
+        data = fooddata.data;
+        //id = fooddata.id;
 
-    data.id = id;
+    //data.id = id;
     if (data.food === '') {
         data.food = nutriInfo.name;
         data.servings = amt;
