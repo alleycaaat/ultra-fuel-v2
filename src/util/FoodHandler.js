@@ -11,6 +11,7 @@ const FoodHandler = (fooddata) => {
 
         for (const key in nutriInfo) if (key in prevHour) prevHour[key] = (parseInt(nutriInfo[key]) * amt);
 
+        return prevHour;
     } else {
         let tempList = [...foodList, nutriInfo.name],
             findDuplicates = tempList.some((e, i, arr) => arr.indexOf(e) !== i);
@@ -20,16 +21,22 @@ const FoodHandler = (fooddata) => {
                 updatedServings = [...prevHour.servings];
 
             for (const key in nutriInfo) if (key in prevHour) prevHour[key] = parseInt(prevHour[key]) + (parseInt(nutriInfo[key]) * amt);
+
             updatedServings[getIdx] = parseInt(servIdx) + parseInt(amt);
-            prevHour.food = [prevHour.food];
+            prevHour.food = [...prevHour.food];
             prevHour.servings = updatedServings;
+
+            return prevHour;
+
+        } else {
+            prevHour.food = [...prevHour.food, nutriInfo.name];
+            prevHour.servings = [...prevHour.servings, amt];
+
+            for (const key in nutriInfo) if (key in prevHour) prevHour[key] = parseInt(prevHour[key]) + (parseInt(nutriInfo[key]) * amt);
+
             return prevHour;
         }
-        prevHour.food = [...prevHour.food, nutriInfo.name];
-        prevHour.servings = [...prevHour.servings, amt];
-        for (const key in nutriInfo) if (key in prevHour) prevHour[key] = parseInt(prevHour[key]) + (parseInt(nutriInfo[key]) * amt);
     }
-    return prevHour;
 };
 
 export default FoodHandler;
