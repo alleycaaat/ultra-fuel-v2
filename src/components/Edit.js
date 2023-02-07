@@ -1,99 +1,70 @@
 import { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
 
-const Edit = ({
-    time,
-    water,
-    food,
-    hour,
-    id,
-    edit,
-    savebtn,
-    tailwind,
-    servings,
-    setEditing,
-    setMessage,
-}) => {
-    const servDup = servings === 0 ? [''] : [...servings];
-    const waterDup = parseInt(water);
-    const twDup = parseInt(tailwind);
-    const foodList = [...food];
-    const [waterAmt, setWaterAmt] = useState(waterDup);
-    const [twAmt, setTwAmt] = useState(twDup);
-    const [servAmt, setServAmt] = useState(servDup);
 
-    //compare food and serving arrays to see if they're different
+const Edit = ({ data, setMessage, savebtn, setEdit }) => {
+
+    const { water, time, food, id, tailwindQty, hour, servings } = data[0];
+    const servArr = servings === [] ? [''] : [...servings];
+    const foodArr = food === [] ? [''] : [...food];
+
+    const [finalFoods, setFinalFoods] = useState(foodArr);
+    const waterDup = parseInt(water);
+    const twDup = parseInt(tailwindQty);
+
+    const [foodList, setFoodList] = useState(foodArr);
+    const [waterAmt, setWaterAmt] = useState(waterDup);
+    const [tailwind, setTailwind] = useState(twDup);
+    const [servAmt, setServAmt] = useState(servArr);
+
+    //compare food and serving arrays
     const matching = (a, b) => {
         for (let el in a) {
             return a[el] === b[el];
         }
     };
-    const handleSave = () => {
-        let changed = false,
-            changedQty = [],
-            orgServe = [];
 
+    const handleSave = () => {
         //verify something changes
-        if (matching(foodList, food) && matching(servings, servAmt)) {
-            if (water === waterAmt && tailwind === twAmt) {
-                changed = false;
+        if (matching(food, finalFoods) && matching(servings, servAmt)) {
+            if (water === waterAmt && tailwind === tailwindQty) {
                 setMessage('No changes to save');
                 return;
             }
         } else {
-            changed = true;
-            //get the original servings as a array of numbers
-            if (servings.length >= 2) {
-                orgServe = servings.map((food) => parseInt(food));
-                //get the amount each food decreased by
-                changedQty = servings.map((num, i) => num - servAmt[i]);
-            }
-
-            //if the servings are one or zero
-            else if (servings.length < 2) {
-                orgServe = [parseInt(servings)];
-                changedQty = [servings - servAmt];
-            }
-        }
-        //save if changes occured
-        if (changed) {
-            changed = false;
-            savebtn(orgServe, changedQty, foodList, hour, waterAmt, twAmt);
+            savebtn(finalFoods, servAmt, waterAmt, tailwind);
         }
     };
 
     const handleCancel = () => {
-        setEditing(false);
-        edit(false);
+        setEdit(false);
     };
 
     const handleWater = () => {
-        waterAmt === 0 ? setWaterAmt(0) : setWaterAmt(waterAmt - 100);
+        if (waterAmt >= 0) {
+            setWaterAmt(prevVal => prevVal - 25);
+        }
     };
     const handleTW = () => {
-        twAmt === 0 ? setTwAmt(0) : setTwAmt(twAmt - 100);
-    };
-
-    const handleServings = (e) => {
-        const { name, value } = e.currentTarget;
-
-        //create a copy of the servings before edits are saved
-        const copy = [...servAmt];
-
-        //subtract one from the amount of servings for the food item
-        copy[name] = value - 1;
-
-        //have an option for saving if there will be no servings left
-        const zero = [...servAmt];
-        zero[name] = 0;
-
-        //if there's still a serving left, set the new serving amt to the new value
-        if (copy[name] > 0) {
-            setServAmt(copy);
-        } else {
-            //otherwise set the new serving amount to zero
-            setServAmt(zero);
+        if (tailwind >= 25) {
+            setTailwind(prevVal => prevVal - 25);
         }
+    };
+    const handleServings = (name, value) => {
+        let newVal = value - 1;
+        if (newVal === 0) {
+            let removeFood = finalFoods.filter((food) =>
+                food !== foodList[name]);
+            setFinalFoods(removeFood);
+        }
+        const deduct = servAmt.map((value, i) => {
+            if (i === name && value !== 0) {
+                return newVal;
+            } else {
+                return value;
+            }
+        });
+        setServAmt(deduct);
     };
 
     return (
@@ -106,8 +77,9 @@ const Edit = ({
                         {waterAmt > 0 ? (
                             <span>
                                 {waterAmt} ml
-                                <button onClick={handleWater} aria-label='subtract 100ml water'>
-                                    <FaMinusCircle aria-hidden='true'/>
+                                <button
+                                    onClick={handleWater} aria-label='subtract 25ml water'>
+                                    <FaMinusCircle aria-hidden='true' />
                                 </button>
                             </span>
                         ) : (
@@ -116,15 +88,16 @@ const Edit = ({
                     </div>
                     <div className='block'>
                         <h2>Tailwind</h2>
-                        {twAmt > 0 ? (
+                        {tailwind > 0 ? (
                             <span>
-                                {twAmt} ml
-                                <button onClick={handleTW} aria-label='subtract 100ml Tailwind'>
-                                    <FaMinusCircle aria-hidden='true'/>
+                                {tailwind} ml
+                                <button onClick={() => handleTW}
+                                    aria-label='subtract 100ml Tailwind'>
+                                    <FaMinusCircle aria-hidden='true' />
                                 </button>
                             </span>
                         ) : (
-                            <p> {twAmt} ml </p>
+                            <p> {tailwind} ml </p>
                         )}
                     </div>
                 </div>
@@ -148,11 +121,12 @@ const Edit = ({
                                         {servs}
                                         <button
                                             name={i}
+                                            id={foodList[i]}
                                             value={servs}
                                             aria-label='remove 1 serving'
-                                            onClick={(e) => handleServings(e)}
+                                            onClick={() => handleServings(i, servs)}
                                         >
-                                            <FaMinusCircle aria-hidden='true'/>
+                                            <FaMinusCircle aria-hidden='true' />
                                         </button>
                                     </li>
                                 ))}
