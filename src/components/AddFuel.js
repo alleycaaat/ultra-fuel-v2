@@ -106,7 +106,6 @@ const AddFuel = ({ setLoading, setMessage }) => {
 
     useEffect(() => {
         loadFood();
-        //loadHours();
     }, []);
 
     const getHourData = (hr) => {
@@ -136,7 +135,6 @@ const AddFuel = ({ setLoading, setMessage }) => {
             setServSize('');
             return;
         }
-
         setFoodNutri(idx[0]);
         setServSize(idx[0].serving);
         setFuelConsumed({ ...fuelConsumed, food: value });
@@ -161,7 +159,7 @@ const AddFuel = ({ setLoading, setMessage }) => {
             currTw: parseInt(hours[time].tailwindQty),
             amt: tailwindserv.indexOf(tailwind),
             data: hourly,
-            },
+        },
             waterdata = {
                 currWater: parseInt(hours[time].water),
                 water: parseInt(water),
@@ -173,24 +171,43 @@ const AddFuel = ({ setLoading, setMessage }) => {
                 prevHour: hourly,
             };
 
+
         if (!isEmpty(water)) {
             newWater = WaterHandler(waterdata);
-        }
-        if (!isEmpty(tailwind)) {
-            newTw = TailwindHandler(twdata);
-        }
-        if (!isEmpty(food)) {
-            newFood = FoodHandler(fooddata);
+            setHourly(newWater);
         }
 
+        switch (true) {
+            case (!isEmpty(tailwind) && !isEmpty(food)):
+                let data = TailwindHandler(twdata);
+                fooddata = {
+                    currFood: foodNutri,
+                    amt: servings,
+                    prevHour: data,
+                };
+                let updatedHour = FoodHandler(fooddata);
+                setHourly(updatedHour);
+                break;
+            case (!isEmpty(tailwind)):
+                newTw = TailwindHandler(twdata);
+                setHourly(newTw);
+                break;
+            case (!isEmpty(food)):
+                newFood = FoodHandler(fooddata);
+                setHourly(newFood);
+                break;
+            default:
+                setMessage('Nothing to save');
+        }
+        saveAndUpdate();
+    };
+    const saveAndUpdate = () => {
         let id = keys[time],
-            contextSave = Object.assign({}, newWater, newTw, newFood),
+            contextSave = Object.assign({}, hourly),
             save = Object.assign({}, { time: times[time] }, contextSave);
-
         addToHour(time, contextSave);
         setSavedData([save]);
         edit(id, save);
-        return;
     };
     return (
         <div className='chart'>
@@ -293,7 +310,11 @@ const AddFuel = ({ setLoading, setMessage }) => {
                     Save Entry
                 </button>
                 {savedData !== undefined &&
-                    (<Chart data={savedData} handleSave={handleSave} id={keys[time]} />)
+                    (<Chart
+                        data={savedData}
+                        handleSave={handleSave}
+                        id={keys[time]}
+                    />)
                 }
             </div>
         </div>
