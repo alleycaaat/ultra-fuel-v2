@@ -1,74 +1,88 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { HourContext } from '../store/hour-context';
+import { SaveEdits } from '../util/SaveEdits';
+
 import { FaMinusCircle } from 'react-icons/fa';
 
+const Edit = ({ setMessage, setActive }) => {
+    const { addToHour, key, keys, hour, setHour, fuel } = useContext(HourContext);
 
-const Edit = ({ data, setMessage, savebtn, setEdit }) => {
-
-    const { water, time, food, id, tailwindQty, hour, servings } = data[0];
+    const { water, time, food, id, tailwindQty, servings } = hour;
     const servArr = servings === [] ? [''] : [...servings];
     const foodArr = food === [] ? [''] : [...food];
 
-    const [finalFoods, setFinalFoods] = useState(foodArr);
+    const [finalFoods, setFinalFoods] = useState(foodArr);  //new food list to save
+
     const waterDup = parseInt(water);
     const twDup = parseInt(tailwindQty);
 
-    const [foodList, setFoodList] = useState(foodArr);
+    // eslint-disable-next-line
+    const [foodList, setFoodList] = useState(foodArr);  //displayed foods
+    const [servAmt, setServAmt] = useState(servArr);
     const [waterAmt, setWaterAmt] = useState(waterDup);
     const [tailwind, setTailwind] = useState(twDup);
-    const [servAmt, setServAmt] = useState(servArr);
-
-    //compare food and serving arrays
-    const matching = (a, b) => {
-        for (let el in a) {
-            return a[el] === b[el];
-        }
-    };
+    const [anyChanges, setAnyChanges] = useState(false);
 
     const handleSave = () => {
-        //verify something changes
-        if (matching(food, finalFoods) && matching(servings, servAmt)) {
-            if (water === waterAmt && tailwind === tailwindQty) {
-                setMessage('No changes to save');
-                return;
-            }
-        } else {
-            savebtn(finalFoods, servAmt, waterAmt, tailwind);
+        if (!anyChanges) {
+            setMessage('No changes to save');
+            return;
+        }
+        if (anyChanges) {
+            let tailwindQty = tailwind,
+                id = keys[key],
+                save = SaveEdits({ id, finalFoods, servAmt, waterAmt, tailwindQty, fuel, hour });
+            addToHour(id, save);
+            setHour(save);
+            setActive('Chart');
         }
     };
 
     const handleCancel = () => {
-        setEdit(false);
+        setActive('Chart');
     };
-
     const handleWater = () => {
         if (waterAmt >= 0) {
+            setAnyChanges(true);
             setWaterAmt(prevVal => prevVal - 25);
         }
     };
     const handleTW = () => {
         if (tailwind >= 25) {
+            setAnyChanges(true);
             setTailwind(prevVal => prevVal - 25);
         }
     };
     const handleServings = (name, value) => {
-        let newVal = value - 1;
-        if (newVal === 0) {
-            let removeFood = finalFoods.filter((food) =>
-                food !== foodList[name]);
-            setFinalFoods(removeFood);
+        if (value === 0) {
+            setMessage('Nothing to remove');
+            return;
         }
-        const deduct = servAmt.map((value, i) => {
-            if (i === name && value !== 0) {
-                return newVal;
-            } else {
-                return value;
-            }
-        });
-        setServAmt(deduct);
+
+        let newVal = parseInt(value) - 1,
+            removeFood = finalFoods.filter((food) =>
+                food !== foodList[name]),
+            servAmtCopy = [...servAmt];
+
+        switch (true) {
+            case (value === 0):
+                setMessage('Nothing to remove');
+                break;
+            case (newVal === 0):
+                setFinalFoods(removeFood);
+                servAmtCopy[name] = 0;
+                setServAmt(servAmtCopy);
+                break;
+            default: //if value !== 0
+                servAmtCopy[name] = newVal;
+                setServAmt(servAmtCopy);
+                break;
+        }
+        setAnyChanges(true);
     };
 
     return (
-        <>
+        <div className='chart'>
             <div className='edit'>
                 <div className='top-row'>{time}</div>
                 <div className='row'>
@@ -91,8 +105,8 @@ const Edit = ({ data, setMessage, savebtn, setEdit }) => {
                         {tailwind > 0 ? (
                             <span>
                                 {tailwind} ml
-                                <button onClick={() => handleTW}
-                                    aria-label='subtract 100ml Tailwind'>
+                                <button onClick={handleTW}
+                                    aria-label='subtract 25ml Tailwind'>
                                     <FaMinusCircle aria-hidden='true' />
                                 </button>
                             </span>
@@ -143,7 +157,7 @@ const Edit = ({ data, setMessage, savebtn, setEdit }) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
