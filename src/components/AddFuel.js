@@ -1,31 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { HourContext } from '../store/hour-context';
-import { FuelContext } from '../store/fuel-context';
 
 import { SelectFuel, SelectML, SelectServings, SelectTime } from './addFuel/Select';
-import { edit, getFuel, gethours } from '../util/api';
-import { GetItemId } from '../util/GetItemId';
+import { edit } from '../util/api';
 import { Constants } from '../constants/Constants';
 import { BlockServ } from './charts/Blocks';
 
 import WaterHandler from '../util/WaterHandler';
 import TailwindHandler from '../util/TailwindHandler';
 import FoodHandler from '../util/FoodHandler';
-import Chart from './charts/Chart';
 
-const AddFuel = ({ setLoading, setMessage }) => {
+const AddFuel = ({ setLoading, setMessage, setActive }) => {
 
-    const { fuel, setFuel } = useContext(FuelContext);
-    const { hours, setHours, addToHour } = useContext(HourContext);
-
+    const { hours, addToHour, fuel, keys, setHour, setKey } = useContext(HourContext);
     const qty = [' ', 1, 2, 3, 4, 5];
-
-    const [keys, setKeys] = useState();
     const [hourly, setHourly] = useState();
     const [foodNutri, setFoodNutri] = useState({});
     const [servSize, setServSize] = useState('');
-    const [savedData, setSavedData] = useState();
+
     const [fuelConsumed, setFuelConsumed] = useState({
         time: 0,
         food: '',
@@ -42,71 +35,6 @@ const AddFuel = ({ setLoading, setMessage }) => {
         newTw,
         newFood;
 
-    const loadHours = async () => {
-        await gethours()
-            .then((data) => {
-                let hours = [];
-                let hourKey = [];
-
-                data.map((hour, i) => {
-                    const key = GetItemId(hour);
-                    hourKey.push(key);
-                    return hourKey;
-                });
-                setKeys(hourKey);
-                data.map((hour, i) => {
-                    hours.push(data[i].data);
-                    return hours;
-                });
-                /*
-                .then((data) => {
-                    let hours = [];
-                    data.map((hour, i) => {
-                        const key = GetItemId(hour);
-                        hours.push({
-                            id: key,
-                            calcium: hour.data.calcium,
-                            calories: hour.data.calories,
-                            food: hour.data.food,
-                            hour: hour.data.hour,
-                            magnesium: hour.data.magnesium,
-                            potassium: hour.data.potassium,
-                            protein: hour.data.protein,
-                            servings: hour.data.servings,
-                            sodium: hour.data.sodium,
-                            tailwindQty: hour.data.tailwindQty,
-                            water: hour.data.water,
-                        });
-                        return hours;
-                    });
-                    */
-                setHours(hours);
-                setHourly(hours[0]);
-            })
-            .catch((err) => {
-                console.log('loadHours API error', err);
-            });
-        setLoading(false);
-    };
-    const loadFood = async () => {
-        await getFuel()
-            .then((fuel) => {
-                let fuelList = [];
-                fuel.map((fuels, i) => {
-                    fuelList.push(fuel[i].data);
-                    return fuelList;
-                });
-                setFuel(fuelList);
-            })
-            .catch((err) => {
-                console.log('loadFood API error', err);
-            });
-        loadHours();
-    };
-
-    useEffect(() => {
-        loadFood();
-    }, []);
 
     const getHourData = (hr) => {
         setHourly(hours[hr]);
@@ -140,9 +68,7 @@ const AddFuel = ({ setLoading, setMessage }) => {
         setFuelConsumed({ ...fuelConsumed, food: value });
     };
 
-    //save button
-    const handleSave = (e) => {
-        e.preventDefault();
+    const handleSave = () => {
         if (food === '' && water === 0 && tailwind === 0) {
             setMessage('Nothing to save');
             return;
@@ -156,7 +82,7 @@ const AddFuel = ({ setLoading, setMessage }) => {
         const isEmpty = (val) => val === '0' || val === '';
 
         let twdata = {
-            currTw: parseInt(hours[time].tailwindQty),
+            currTw: parseInt(hours[time].tailwind),
             amt: tailwindserv.indexOf(tailwind),
             data: hourly,
         },
@@ -202,12 +128,15 @@ const AddFuel = ({ setLoading, setMessage }) => {
         saveAndUpdate();
     };
     const saveAndUpdate = () => {
+        setLoading(true);
         let id = keys[time],
-            contextSave = Object.assign({}, hourly),
-            save = Object.assign({}, { time: times[time] }, contextSave);
-        addToHour(time, contextSave);
-        setSavedData([save]);
+            save = Object.assign({}, hourly);
+        addToHour(id, save);
+        setHour(hourly);
+        setKey(time);
         edit(id, save);
+        setLoading(false);
+        setActive('Chart');
     };
     return (
         <div className='chart'>
@@ -309,13 +238,6 @@ const AddFuel = ({ setLoading, setMessage }) => {
                 >
                     Save Entry
                 </button>
-                {savedData !== undefined &&
-                    (<Chart
-                        data={savedData}
-                        handleSave={handleSave}
-                        id={keys[time]}
-                    />)
-                }
             </div>
         </div>
     );
