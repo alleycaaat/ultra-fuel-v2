@@ -5,7 +5,7 @@ export const SplitButton = ({ time, onClick }) => {
         <>
             <button
                 className='plus'
-                aria-label='show all {time} hour options'
+                aria-label={`show all ${ time } hour options`}
                 onClick={onClick}
             >
                 <FaPlusCircle aria-hidden='true' />
