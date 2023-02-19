@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
-    "netlify-cli": "^12.2.7"
+    "netlify-cli": "^12.2.7",
+    "sass": "^1.58.3"
   }
 }
