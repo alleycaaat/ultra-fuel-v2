@@ -506,7 +506,7 @@ body {
             display: flex;
             flex-direction: column;
             &.serving-size {
-                min-width: 185px;
+                min-width: 195px;
                 font-size: 16px;
                 border-bottom: 1px solid $medOrange;
             }
@@ -540,21 +540,37 @@ body {
             border: 3px solid $darkBlue;
             border-radius: 15px;
             margin-bottom: 7px;
+            .heading {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                h2 {
+                    color: $darkBlue;
+                    text-transform: uppercase;
+                }
+                .hidden {
+                    width: 27px;
+                    background-color: rgba(0, 0, 0, 0);
+                    margin-right: auto;
+                    visibility: hidden;
+                }
             .close {
                 display: flex;
                 flex-direction: row;
-                    align-items: center;
-                    justify-content: center;
-                margin-left: auto;
+                align-items: center;
+                justify-content: center;
                 margin-top: 5px;
+                margin-right: 7px;
+                margin-left: auto;
                 border-radius: 50%;
-                border: 1px solid $darkBlue;
+                border: 1px solid white;
                 font-size: 25px;
-                margin-right: 5px;
-                color: $darkBlue;
-                background-color: white;
+                color: white;
+                background-color: $darkBlue;
                 box-shadow: $box-shadow;
             }
+        }
         }
         //style the food and serving lists on Edit.js
         .food-edit {
