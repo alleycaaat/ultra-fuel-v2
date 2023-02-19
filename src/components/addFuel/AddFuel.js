@@ -54,7 +54,6 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
 
     const handleLog = (e) => {
         const { name, value } = e.target;
-        console.log('id:',e.target.id)
         if (name === 'time') {
             let hr = times.indexOf(value);
             getHourData(hr);
