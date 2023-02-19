@@ -54,6 +54,7 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
 
     const handleLog = (e) => {
         const { name, value } = e.target;
+        console.log('id:',e.target.id)
         if (name === 'time') {
             let hr = times.indexOf(value);
             getHourData(hr);
@@ -152,8 +153,12 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
     };
 
     return (
-        <div className='chart add-fuel'>
-            <button className='close' onClick={() => setAddFuel(false)}><IoMdClose /></button>
+        <section className='chart add-fuel'>
+            <span className='heading'>
+                <button className='hidden' />
+                <h2>Add Fuel</h2>
+                <button className='close' aria-label='close add fuel' onClick={() => setAddFuel(false)}><IoMdClose /></button>
+            </span>
             {/*  MOBILE DISPLAY */}
             <div className='sm-AddFuel'>
                 <fieldset>
@@ -253,7 +258,7 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
                     Save Entry
                 </button>
             </div>
-        </div>
+        </section>
     );
 };
 

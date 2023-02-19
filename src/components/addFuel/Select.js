@@ -33,6 +33,7 @@ export const SelectFuel = ({ forlabel, name, id, title, onChange, list }) => {
             >
                 {list.map((foods, idx) => (
                     <option
+                        id={`${ foods.name }`}
                         key={idx}
                         index={idx}
                         value={foods.name}
@@ -58,6 +59,7 @@ export const SelectML = ({ name, title, onChange, list }) => {
             >
                 {list.map((name, idx) => (
                     <option
+                        id={`${ name } ml ${title}`}
                         key={idx}
                         index={idx}
                         value={name}>
@@ -81,6 +83,7 @@ export const SelectTime = ({ name, title, onChange, list }) => {
             >
                 {list.map((name, idx) => (
                     <option
+                        id={`${ name }`}
                         key={idx}
                         index={idx}
                         value={name}>
@@ -109,6 +112,7 @@ export const SelectServings = ({ name, id, title, onChange, servSize, list }) =>
                 ) : (
                     list.map((qties, idx) => (
                         <option
+                            id={`${ qties } serving`}
                             key={idx}
                             index={idx}
                             value={qties}>
