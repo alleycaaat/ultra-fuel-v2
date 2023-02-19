@@ -5,12 +5,10 @@ import { SaveEdits } from '../../util/SaveEdits';
 
 import { BlockML, BlockFood, BlockServings } from './Blocks';
 
-const Edit = ({ setMessage, setActive }) => {
+const EditSplit = ({ setMessage, key, setEdit }) => {
     const { addToHour, keys, hour, setHour, fuel } = useContext(HourContext);
-
-    const { water, food, tailwindQty, servings } = hour;
-
-    const servArr = servings === ([] || 0) ? [''] : [...servings];
+    const { water, food, id, tailwindQty, servings } = hour;
+    const servArr = servings === 0 ? [''] : [...servings];
     const foodArr = food === [] ? [''] : [...food];
 
     const [finalFoods, setFinalFoods] = useState(foodArr);  //new food list to save
@@ -25,8 +23,7 @@ const Edit = ({ setMessage, setActive }) => {
     const [tailwind, setTailwind] = useState(twDup);
     const [anyChanges, setAnyChanges] = useState(false);
     let times = Constants.times,
-        time = times[hour.hour],
-        id = keys[hour.hour];
+        time = times[hour.hour];
 
     const handleSave = () => {
         if (!anyChanges) {
@@ -35,14 +32,14 @@ const Edit = ({ setMessage, setActive }) => {
         }
         if (anyChanges) {
             let tailwindQty = tailwind,
+                id = keys[key],
                 save = SaveEdits({ id, finalFoods, servAmt, waterAmt, tailwindQty, fuel, hour });
-            addToHour(hour.hour, save);
+            addToHour(id, save);
             setHour(save);
-            setActive('Chart');
         }
     };
     const handleCancel = () => {
-        setActive('Chart');
+        setEdit(false);
     };
     const handleWater = () => {
         if (waterAmt >= 0) {
@@ -85,7 +82,7 @@ const Edit = ({ setMessage, setActive }) => {
     };
 
     return (
-        <div className='chart'>
+        <div className='chart' key={key}>
             <div className='edit'>
                 <div className='top-row'>{time}</div>
                 <div className='row'>
@@ -131,4 +128,4 @@ const Edit = ({ setMessage, setActive }) => {
     );
 };
 
-export default Edit;
+export default EditSplit;

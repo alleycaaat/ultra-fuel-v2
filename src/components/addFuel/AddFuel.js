@@ -11,9 +11,12 @@ import WaterHandler from '../../util/WaterHandler';
 import TailwindHandler from '../../util/TailwindHandler';
 import FoodHandler from '../../util/FoodHandler';
 
-const AddFuel = ({ setLoading, setMessage, setActive }) => {
+import { IoMdClose } from 'react-icons/io';
+
+const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel }) => {
 
     const { hours, addToHour, fuel, keys, setHour, setKey } = useContext(HourContext);
+
     const qty = [' ', 1, 2, 3, 4, 5];
     const [hourly, setHourly] = useState();
     const [foodNutri, setFoodNutri] = useState({});
@@ -24,14 +27,15 @@ const AddFuel = ({ setLoading, setMessage, setActive }) => {
         time: 0,
         food: '',
         servings: 0,
-        water: '0',
-        tailwind: '0',
+        water: 0,
+        tailwind: 0,
     });
     const { time, food, servings, water, tailwind } = fuelConsumed;
 
     useEffect(() => {
-        if (isFirstRender.current) {
+        if (isFirstRender.current && hours !== undefined) {
             getHourData(0);
+            setActiveSplit('');
             isFirstRender.current = false;
             return;
         }
@@ -77,7 +81,7 @@ const AddFuel = ({ setLoading, setMessage, setActive }) => {
     };
 
     const handleSave = () => {
-        const isEmpty = (val) => val === '0' || val === '' || val === [];
+        const isEmpty = (val) => val === 0 || val === '' || val === [];
 
         if (isEmpty(food) && isEmpty(water) && isEmpty(tailwind)) {
             setMessage('Nothing to save');
@@ -105,7 +109,6 @@ const AddFuel = ({ setLoading, setMessage, setActive }) => {
                 prevHour: hourly,
             };
 
-
         if (!isEmpty(water)) {
             newWater = WaterHandler(waterdata);
             setHourly(newWater);
@@ -126,9 +129,11 @@ const AddFuel = ({ setLoading, setMessage, setActive }) => {
                 newTw = TailwindHandler(twdata);
                 setHourly(newTw);
                 break;
-            default: //(!isEmpty(food))
+            case (!isEmpty(food)):
                 newFood = FoodHandler(fooddata);
                 setHourly(newFood);
+                break;
+            default:
                 break;
         }
         saveAndUpdate();
@@ -147,7 +152,8 @@ const AddFuel = ({ setLoading, setMessage, setActive }) => {
     };
 
     return (
-        <div className='chart'>
+        <div className='chart add-fuel'>
+            <button className='close' onClick={() => setAddFuel(false)}><IoMdClose /></button>
             {/*  MOBILE DISPLAY */}
             <div className='sm-AddFuel'>
                 <fieldset>
@@ -160,7 +166,6 @@ const AddFuel = ({ setLoading, setMessage, setActive }) => {
                         />
                     </div>
                     <div className='drops'>
-                        <label htmlFor='water'>Waterrr</label>
                         <SelectML
                             name={water}
                             title='Water'

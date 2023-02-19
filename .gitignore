@@ -27,3 +27,6 @@ yarn-error.log*
 Hours.js
 # Local Netlify folder
 .netlify
+
+style.css
+style.css.map

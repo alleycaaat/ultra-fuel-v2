@@ -1,12 +1,13 @@
-const SetSplits = ({ hrs, onClick }) => {
+const SetSplits = ({ hrs, splitHour }) => {
     return (
         <>
             {hrs.map((clock, idx) => (
                 <button
                     key={idx}
+                    name={idx}
                     value={clock}
                     className='tab'
-                    onClick={onClick}
+                    onClick={(e) => splitHour(e)}
                 >
                     {clock}
                 </button>

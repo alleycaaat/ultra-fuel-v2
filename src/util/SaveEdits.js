@@ -22,6 +22,7 @@ export const SaveEdits = ({ id, finalFoods, servAmt, hour, waterAmt, tailwindQty
             tailwindQty: tailwindQty,
         },
         tailwindAmt = tailwindQty / 25;
+
     if (finalFoods !== []) {
         finalFoods.map((name, i) => {
             let idx = fuel.findIndex((f) => f.name === finalFoods[i]);

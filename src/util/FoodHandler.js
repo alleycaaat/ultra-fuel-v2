@@ -4,13 +4,12 @@ const FoodHandler = (fooddata) => {
         nutriInfo = fooddata.currFood,
         amt = fooddata.amt;
 
-
     //tally the amounts regardless of foodlist
     for (const key in nutriInfo)
         if (key in prevHour)
             prevHour[key] = parseInt(prevHour[key] || 0) + (parseInt(nutriInfo[key]) * amt);
     //if no food is in hour
-    if (prevHour.food === '') {
+    if (prevHour.food === '' && nutriInfo !== null) {
         prevHour.food = [nutriInfo.name];
         prevHour.servings = amt;
         return prevHour;

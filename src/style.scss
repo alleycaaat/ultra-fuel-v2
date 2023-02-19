@@ -178,14 +178,21 @@ body {
             4px 4px 0 $darkGrey,
             5px 5px 0 $darkGrey;
     }
-    .messageCentre {
+    .messageCentre,
+    .splitMessage {
         font-size: 19px;
         line-height: 21px;
         height: 21px;
         text-align: center;
-        margin-top: 7px;
-        color: $darkBlue;
+        margin-top: 5px;
+        color: $darkOrange;
         font-weight: bold;
+    }
+    .splitMessage {
+        font-size: 18px;
+        line-height: 19px;
+        margin-top: 3px;
+        height: 19px;
     }
     //notes button
     .fuelBtn {
@@ -444,7 +451,7 @@ body {
         flex-direction: column;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 7px;
+        //margin-top: 3px;
         width: 95%;
         max-width: 680px;
         animation: fade 0.5s linear forwards;
@@ -455,11 +462,14 @@ body {
             font-size: 16px;
         }
         select {
-            border: none;
+           //border: none;
             margin-right: 5px;
             margin-left: 5px;
             font-size: 16px;
-            background-color: $transparentOrange;
+            border: 1px solid $medOrange;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0)
+            //background-color: $transparentOrange;
         }
         //style all the divs in chart, no need for class
         >div {
@@ -482,7 +492,7 @@ body {
             ::-webkit-scrollbar-thumb {
                 border-radius: 10px;
                 background-image: none;
-                background-color: $darkOrange;
+                background-color: $medOrange;
                 border: none;
             }
             .serving {
@@ -498,7 +508,7 @@ body {
             &.serving-size {
                 min-width: 185px;
                 font-size: 16px;
-                border-bottom: 1px solid $darkOrange;
+                border-bottom: 1px solid $medOrange;
             }
             //targets save and cancel buttons on Edit.js
             &.buttons {
@@ -526,6 +536,26 @@ body {
                 height: 21px;
             }
         }
+        &.add-fuel {
+            border: 3px solid $darkBlue;
+            border-radius: 15px;
+            margin-bottom: 7px;
+            .close {
+                display: flex;
+                flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                margin-left: auto;
+                margin-top: 5px;
+                border-radius: 50%;
+                border: 1px solid $darkBlue;
+                font-size: 25px;
+                margin-right: 5px;
+                color: $darkBlue;
+                background-color: white;
+                box-shadow: $box-shadow;
+            }
+        }
         //style the food and serving lists on Edit.js
         .food-edit {
             display: flex;
@@ -551,11 +581,14 @@ body {
         .sm-AddFuel {
             font-size: 17px;
         }
+    >.sm-AddFuel{
+            margin: 7px auto 0 auto;
+        }
         //save button in AddFuel.js
         .last {
             display: flex;
             flex-direction: column;
-            margin-top: 5px;
+            margin-bottom: 19px;
             >button {
                 @include chartButton;
                 padding: 2px 7px;
@@ -572,7 +605,6 @@ body {
             flex-direction: column;
             justify-content: center;
             border-radius: 0 0 5px 5px;
-            margin-bottom: 13px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
             p {
                 font-size: 15px;
@@ -590,7 +622,7 @@ body {
                     line-height: 21px;
                 }
             }
-            //holds the time
+            //holds the time in mobile
             .top-row {
                 width: 100%;
                 margin-top: 0;
@@ -651,7 +683,9 @@ body {
                     }
                 }
             }
-
+        }
+        .edit {
+            margin-top: 11px;
         }
         //***************************
         //large screen add fuel
@@ -659,16 +693,20 @@ body {
         .lg-AddFuel {
             display: none;
             font-size: 16px;
+            margin: 7px auto;
             label,
             select {
                 font-size: 18px;
+                background-color: $lightGrey;
             }
             .block {
-                margin-left: 5px;
-                margin-right: 7px;
+                margin: 3px auto;
                 &.serving-size {
                     font-size: 18px;
                 }
+            }
+            span {
+                margin: 3px auto;
             }
         }
         //***************************
@@ -677,11 +715,14 @@ body {
         .chartdesktop {
             display: none;
             max-width: 880px;
-            margin-top: 5px;
-            margin-bottom: 17px;
+            //margin-top: 3px;
+            margin-bottom: 5px;
             border-radius: 0 0 5px 5px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
-            .row {
+            .row,
+            .upper-row {
+                display: flex;
+                flex-direction: row;
                 &:nth-of-type(1) {
                     background-color: $lightOrange;
                     box-shadow: $time-shadow;
@@ -703,13 +744,13 @@ body {
                     .time {
                         border: $lightBlue 3px solid;
                         color: #000;
-                        font-size: 17px;
-                        // font-weight: bold;
-                        line-height: 17px;
-                        margin-top: 2px;
-                        padding: 1px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        text-align: center;
+                        line-height: 21px;
+                        margin: auto;
+                        padding: 1px 9px;
                         border-radius: 5px;
-                        width: 100%;
                     }
                     h2 {
                         text-align: center;
@@ -736,6 +777,21 @@ body {
                     }
                 }
             }
+            .upper-row {
+                .block {
+                    margin: 5px 2px;
+
+                &:first-child {
+                    width: 25%;
+                    margin: auto 5px;
+                }
+                &:last-child {
+                    width: 15%;
+                    margin: auto 5px;
+                }
+            }
+            }
+
         }
     }
 
@@ -776,7 +832,7 @@ body {
         }
     }
 }
-@media screen and (min-width: 530px) {
+@media screen and (min-width: 575px) {
     .wrapper {
         .chart {
             .sm-AddFuel,

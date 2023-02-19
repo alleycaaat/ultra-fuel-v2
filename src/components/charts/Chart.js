@@ -9,10 +9,11 @@ const Chart = ({ setMessage, setActive }) => {
     const { hour } = useContext(HourContext);
 
     const { water, food, calories, calcium, magnesium, potassium, sodium, protein, tailwindQty } = hour;
-    let times = Constants.times,
-        time = times[hour.hour];
 
     const foodList = food === '' ? [''] : [...food];
+
+    let times = Constants.times,
+        time = times[hour.hour];
 
     const handleEdit = () => {
         if (water === 0 && tailwindQty === 0) {
@@ -26,7 +27,6 @@ const Chart = ({ setMessage, setActive }) => {
 
     return (
         <div className='chart'>
-
             {/* mobile version*/}
             <div className='chartmobile'>
                 <div className='top-row'>{time}</div>
@@ -50,7 +50,7 @@ const Chart = ({ setMessage, setActive }) => {
 
             {/* desktop version*/}
             <div className='chartdesktop'>
-                <div className='row'>
+                <div className='upper-row'>
                     <div className='block'>
                         <p className='time'>{time}</p>
                     </div>
