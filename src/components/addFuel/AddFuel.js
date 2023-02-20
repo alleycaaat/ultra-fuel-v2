@@ -163,7 +163,7 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
                 <fieldset>
                     <div className='drops'>
                         <SelectTime
-                            name={time}
+                            name='time'
                             title='Time'
                             onChange={handleLog}
                             list={times}
@@ -171,13 +171,13 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
                     </div>
                     <div className='drops'>
                         <SelectML
-                            name={water}
+                            name='water'
                             title='Water'
                             onChange={handleLog}
                             list={h20}
                         />
                         <SelectML
-                            name={tailwind}
+                            name='tailwind'
                             title='Tailwind'
                             onChange={handleLog}
                             list={tailwindserv}
@@ -185,15 +185,14 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
                     </div>
                     <div className='drops'>
                         <SelectFuel
-                            forlabel='food'
-                            name={food}
+                            name='food'
                             id={food}
                             title='Food'
                             onChange={handleFood}
                             list={fuel}
                         />
                         <SelectServings
-                            name={servings}
+                            name='servings'
                             title='Servings'
                             onChange={handleLog}
                             list={qty}
@@ -211,19 +210,19 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
                 <fieldset>
                     <div className='drops'>
                         <SelectTime
-                            name={time}
+                            name='time'
                             title='Time'
                             onChange={handleLog}
                             list={times}
                         />
                         <SelectML
-                            name={water}
+                            name='water'
                             title='Water'
                             onChange={handleLog}
                             list={h20}
                         />
                         <SelectML
-                            name={tailwind}
+                            name='tailwind'
                             title='Tailwind'
                             onChange={handleLog}
                             list={tailwindserv}
@@ -231,14 +230,14 @@ const AddFuel = ({ setLoading, setMessage, setActive, setActiveSplit, setAddFuel
                     </div>
                     <div className='drops'>
                         <SelectFuel
-                            name={food}
+                            name='food'
                             title='Food'
                             onChange={handleFood}
                             list={fuel}
                         />
                         <BlockServ servSize={servSize} />
                         <SelectServings
-                            name={servings}
+                            name='servings'
                             title='Servings'
                             onChange={handleLog}
                             list={qty}

@@ -21,7 +21,7 @@ export const Select = ({ name, title, onChange, list }) => {
     );
 };
 
-export const SelectFuel = ({ forlabel, name, id, title, onChange, list }) => {
+export const SelectFuel = ({ name, title, onChange, list }) => {
     return (
         <span>
             <label htmlFor={title}>{title}</label>
@@ -52,14 +52,14 @@ export const SelectML = ({ name, title, onChange, list }) => {
         <span>
             <label htmlFor={title}>{title}</label>
             <select
-                name={title.toLowerCase()}
+                name={name}
                 id={title}
                 onChange={onChange}
                 className='dropdown'
             >
                 {list.map((name, idx) => (
                     <option
-                        id={`${ name } ml ${title}`}
+                        id={`${ name } ml ${ title }`}
                         key={idx}
                         index={idx}
                         value={name}>
@@ -76,7 +76,7 @@ export const SelectTime = ({ name, title, onChange, list }) => {
         <span>
             <label htmlFor='time'>{title}</label>
             <select
-                name='time'
+                name={name}
                 id='time'
                 onChange={onChange}
                 className='dropdown time'
@@ -95,12 +95,12 @@ export const SelectTime = ({ name, title, onChange, list }) => {
     );
 };
 
-export const SelectServings = ({ name, id, title, onChange, servSize, list }) => {
+export const SelectServings = ({ name, title, onChange, servSize, list }) => {
     return (
         <span>
             <label htmlFor={title}>{title}</label>
             <select
-                name={title.toLowerCase()}
+                name={name}
                 id={title}
                 type='number'
                 onChange={onChange}
