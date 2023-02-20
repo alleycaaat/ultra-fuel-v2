@@ -1,10 +1,10 @@
 export const Select = ({ name, title, onChange, list }) => {
     return (
         <span>
-            <label htmlFor={name}>{title}</label>
+            <label htmlFor={title}>{title}</label>
             <select
                 name={name}
-                id={name}
+                id={title}
                 onChange={onChange}
                 className='dropdown'
             >
@@ -24,10 +24,10 @@ export const Select = ({ name, title, onChange, list }) => {
 export const SelectFuel = ({ forlabel, name, id, title, onChange, list }) => {
     return (
         <span>
-            <label htmlFor={forlabel}>{title}</label>
+            <label htmlFor={title}>{title}</label>
             <select
                 name={name}
-                id={id}
+                id={title}
                 onChange={onChange}
                 className='dropdown'
             >
@@ -50,10 +50,10 @@ export const SelectFuel = ({ forlabel, name, id, title, onChange, list }) => {
 export const SelectML = ({ name, title, onChange, list }) => {
     return (
         <span>
-            <label>{title}</label>
+            <label htmlFor={title}>{title}</label>
             <select
                 name={title.toLowerCase()}
-                id={name}
+                id={title}
                 onChange={onChange}
                 className='dropdown'
             >
@@ -74,10 +74,10 @@ export const SelectML = ({ name, title, onChange, list }) => {
 export const SelectTime = ({ name, title, onChange, list }) => {
     return (
         <span>
-            <label>{title}</label>
+            <label htmlFor='time'>{title}</label>
             <select
                 name='time'
-                id={name}
+                id='time'
                 onChange={onChange}
                 className='dropdown time'
             >
@@ -98,10 +98,10 @@ export const SelectTime = ({ name, title, onChange, list }) => {
 export const SelectServings = ({ name, id, title, onChange, servSize, list }) => {
     return (
         <span>
-            <label>{title}</label>
+            <label htmlFor={title}>{title}</label>
             <select
                 name={title.toLowerCase()}
-                id={id}
+                id={title}
                 type='number'
                 onChange={onChange}
                 className='dropdown serving'
