@@ -28,5 +28,7 @@ Hours.js
 # Local Netlify folder
 .netlify
 
-style.css
-style.css.map
+src/style.css
+src/style.css.map
+
+.vscode

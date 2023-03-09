@@ -3,21 +3,13 @@ const q = faunadb.query;
 
 exports.handler = async (event, context) => {
     const client = new faunadb.Client({
-        secret: 'fnAEwTTlCjAAS9hlkAW4EzdgPdeuB1Jtg2c2v7RT',
+        secret: process.env.DEMO,
         domain: 'db.us.fauna.com',
         port: 443,
         scheme: 'https',
     });
 
     return client
-    //.query(q.Select(['data'], q.Get(q.Ref(q.Collection('indexes/all_fuel')))))
-/*
-
-    .query(q.Map(q.Paginate(q.Documents(q.Index('all_fuel'))),
-    q.Lambda(fuel => q.Get(fuel))))
-    .then((ret) => console.log(ret))
-
-*/
         .query(q.Paginate(q.Match(q.Ref('indexes/all_fuel'))))
         .then((response) => {
 
