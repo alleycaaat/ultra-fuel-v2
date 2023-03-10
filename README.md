@@ -49,7 +49,7 @@ Repo: <a href='https://github.com/alleycaaat/ultra-fuel-v2'>https://github.com/a
 <br>
 
 ## <strong>About The Project</strong>
-***
+
 ![An app titled Ultra Fuel with buttons for fifteen hours of the day to click on and a menu to add fuel to 07:00-08:00
 ](./src/img/screenshot.png)
 
@@ -103,7 +103,7 @@ Repo: <a href='https://github.com/alleycaaat/ultra-fuel-v2'>https://github.com/a
 
 
 ## <strong>Running the Project</strong>
-***
+
 1 - Clone the repo
    ```sh
    git clone https://github.com/alleycaaat/ultra-fuel-v2.git
@@ -163,7 +163,6 @@ netlify env:import .env
 <p align='right'>(<a href='#top'>back to top</a>)</p>
 
 ## <strong>Feedback</strong>
-***
 
 As my cats and dog aren't too keen on providing input on my projects, feel free to [send me a message](https://www.achulslander.com/#contact) if you have some constructive comments, or [file an issue](https://github.com/alleycaaat/ultra-fuel-v2/issues/new) if I really buggered something up.
 
@@ -172,7 +171,7 @@ This app was developed specifically for me to use during a race, so things are a
 <p align='right'>(<a href='#top'>back to top</a>)</p>
 
 ## <strong>Contact</strong>
-***
+
 <div align='center'>
 
 AC Hulslander - [Send me a message](https://www.achulslander.com/#contact)
@@ -186,7 +185,7 @@ AC Hulslander - [Send me a message](https://www.achulslander.com/#contact)
 <p align='right'>(<a href='#top'>back to top</a>)</p>
 
 ## <strong>Acknowledgements</strong>
-***
+
 - [Img Shields](https://shields.io/)
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [ReadMe Format Inspiration I](https://github.com/othneildrew/Best-README-Template)
