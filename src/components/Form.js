@@ -74,9 +74,9 @@ export const Form = () => {
             });
     };
 
-    useEffect(() => {
-        loadHours();
-    }, []); // eslint-disable-line
+   // useEffect(() => {
+   //     loadHours();
+   // }, []); // eslint-disable-line
 
     useEffect(() => {
         if (activeSplit !== '') {
