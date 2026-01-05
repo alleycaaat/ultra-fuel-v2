@@ -101,7 +101,7 @@ export const Form = () => {
 
     return (
         <div className='wrapper'>
-            {loading && <Loading />}
+    {/*{loading && <Loading />} */}
             <Header />
             <div className='buttonswrapper'>
                 <button
