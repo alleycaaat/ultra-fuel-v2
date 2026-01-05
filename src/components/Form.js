@@ -54,7 +54,7 @@ export const Form = () => {
             .catch((err) => {
                 console.log('loadHours API error', err);
             });
-        loadFood();
+        //loadFood();
     };
 
     const loadFood = async () => {
@@ -74,9 +74,9 @@ export const Form = () => {
             });
     };
 
-   // useEffect(() => {
-   //     loadHours();
-   // }, []); // eslint-disable-line
+    useEffect(() => {
+        loadHours();
+    }, []); // eslint-disable-line
 
     useEffect(() => {
         if (activeSplit !== '') {
