@@ -24,7 +24,7 @@ export const Form = () => {
     const [addFuel, setAddFuel] = useState(false);
     const [active, setActive] = useState('');
     const [message, setMessage] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [readMore, setReadMore] = useState(false);
     const [activeSplit, setActiveSplit] = useState('');
 
